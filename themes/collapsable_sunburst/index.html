@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+<link rel="stylesheet" type="text/css" href="style.css"/>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div id="main">
+    <div class="container">
+        <div class="row clearfix">
+          <div class="col-md-8 column">
+            <div class="row clearfix">
+              <div class="col-md-12 column">
+                  <h4>Taxonomic lineage</h4>
+                  <div id="explanation" style="visibility: hidden;">
+                  
+                      <div id="sequence"></div>
+                  </div>
+              </div>
+            </div>
+            <div class="row clearfix">
+              <div class="col-md-12 column">
+                    <h4>Taxonomic distribution</h4>
+                    <div id="chart"> </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 column">
+              <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <h4><u>Options</u></h4>
+                    Predefined levels: <span id="metazoa"><a href="#">Metazoa</a></span>, Mammals
+                    <ul>
+                       <li>View top x species</li>
+                       <li>Show complete proteomes</li>
+                      
+                       <li><span id="reset"><a href="#">Reset view</a></span></li>
+                     </ul>
+                     <form>
+                         <label><input type="radio" name="mode" value="size" checked> Sequences</                 label>
+                         <label><input type="radio" name="mode" value="count" > Species</label>
+                       </form>
+                </div>
+              </div>
+          <div class="row clearfix">
+              <div class="col-md-12 column">
+                  <h4><u>Hits distribution</u></h4>
+                  <div id="histogram">
+                      <svg></svg>
+                  </div>
+              </div>
+          </div>
+          <div class="row clearfix">
+              <div class="col-md-12 column">
+                <h4><u>Annotation word cloud</u></h4>
+                <div id="word_cloud">
+              </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script src="../../js/d3.v3.min.js"></script>
+<script src="../../js/nv.d3.min.js"></script>
+<script src="../../js/d3.layout.cloud.js"></script>
+<script src="../../lib/breadcrumbs.js"></script>
+<script src="../../lib/histogram.js"></script>
+<script src="../../lib/word_cloud.js"></script>
+<script src="code.js"></script>

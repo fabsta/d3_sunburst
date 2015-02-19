@@ -1,0 +1,74 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  background-color: #fff;
+  /*width: 960px;*/
+  /*height: 700px;*/
+  margin-top: 10px;
+}
+
+#main {
+  float: left;
+  width: 60%;
+  /*width: 750px;*/
+}
+
+#sidebar {
+  float: right;
+  width: 40%;
+  /*width: 200px;*/
+}
+
+#sequence {
+  width: 600px;
+  /*height: 70px;*/
+}
+
+#legend {
+  padding: 10px 0 0 3px;
+}
+
+#sequence text, #legend text {
+  font-weight: 600;
+  fill: #fff;
+}
+
+#chart {
+  position: relative;
+}
+
+#chart path {
+  stroke: #fff;
+}
+
+#explanations {
+  position: absolute;
+  top: 260px;
+  left: 305px;
+  width: 140px;
+  text-align: center;
+  color: #666;
+  z-index: -1;
+}
+
+#percentage {
+  font-size: 2.5em;
+}
+
+#tooltip { background-color: white;
+        padding: 3px 5px;
+        border: 1px solid black;
+        text-align: center;}
+
+/*Word cloud*/
+.legend {
+        border: 1px solid #555555;
+        border-radius: 5px 5px 5px 5px;
+        font-size: 0.8em;
+        margin: 10px;
+        padding: 8px;
+    }
+    .bld {
+        font-weight: bold;
+    }
