@@ -10,12 +10,12 @@ body {
 
 #main {
   float: left;
-  width: 750px;
+  //width: 750px;
 }
 
 #sidebar {
   float: right;
-  width: 100px;
+  width: 200px;
 }
 
 #sequence {
@@ -27,10 +27,10 @@ body {
   padding: 10px 0 0 3px;
 }
 
-#sequence text, #legend text {
-  font-weight: 600;
-  fill: #fff;
-}
+/*#sequence text, #legend text {
+font-weight: 300;
+fill: #fff;
+}*/
 
 #chart {
   position: relative;
@@ -40,7 +40,7 @@ body {
   stroke: #fff;
 }
 
-#explanation {
+#explanations {
   position: absolute;
   top: 260px;
   left: 305px;
@@ -54,3 +54,104 @@ body {
   font-size: 2.5em;
 }
 
+.axis text {
+  font-family: sans-serif;
+  font-size: 9px;
+}
+
+.hit_legend{
+  font-size: 9px;
+}
+
+#tooltip { background-color: white;
+  padding: 3px 5px;
+  border: 1px solid black;
+  text-align: center;
+}
+
+.dataTables_wrapper {
+  _height: 102px;
+  min-height: 102px;
+}
+
+.node {
+  cursor: pointer;
+}
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+.node text {
+  font: 7px sans-serif;
+}
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+
+.top_hits{
+  margin-left: 0px;
+  list-style: none;
+  border-top: 1px solid #aaa;
+}
+
+
+.top_hits .hit_info {
+  padding-top: 10px;
+  font-size: 8px;
+}
+
+.top_hits .hit_info span {
+  display: block;
+  text-align: center;
+}
+
+.top_hits .domain_info {
+  /*padding-top: 10px;*/
+  font-size: 8px;
+}
+
+.top_hits .domain_info span {
+  display: block;
+  text-align: center;
+}
+
+
+.top_hits .middle_container{
+  /*margin-left:7px;*/
+}
+
+
+.top_hits .middle_container .query_div{
+  padding-top: 3px
+}
+
+.top_hits .middle_container .target_div{
+  /*padding-top: -10px*/
+  margin-top: -15px;
+}
+
+.top_hits ul{
+  margin-left: 0px;
+}
+
+
+.top_hits .left span {
+  display: block;
+  text-align: center;
+}
+
+.top_hits .block {
+  margin: .3em 1em 0 0;
+  color: #666;
+  border: 1px solid #999;
+  text-transform: uppercase;
+  /*font-weight: bold;*/
+  padding: .2em;
+}
+.top_hits .container-fluid{
+  border-top: 1px solid #aaa;
+}
