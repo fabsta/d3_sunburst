@@ -1,7 +1,7 @@
 var hmmer_theme_hmmer_dashboard = function() {
   "use strict";
 
-  var hmmer_theme = function (div) {
+  var hmmer_theme = function (div,uuid) {
 
     //sunburst
 	  var hmmer_hits_viewer = hmmer_vis.hits_view();
@@ -10,7 +10,7 @@ var hmmer_theme_hmmer_dashboard = function() {
 	var hmmer_pdb_viewer = hmmer_vis.pdb_viewer();
     // start the spinners
     start_spinner();
-    var hmmer_top_hits_url = "http://wwwdev.ebi.ac.uk/Tools/hmmer/results/AFAC61EA-1501-11E5-832E-04AF1AB9B3C4/dashboard/";
+    var hmmer_top_hits_url = "http://wwwdev.ebi.ac.uk/Tools/hmmer/results/"+uuid+"/dashboard/";
 	// var hmmer_top_hits_url = "https://rawgit.com/fabsta/d3_sunburst/master/data/stats.json";
 	var hmmer_domain_tree_url = "http://wwwdev.ebi.ac.uk/Tools/hmmer/results/484B2AFA-CBC2-11E4-B744-822AB8F19640/fail/";
     var hmmer_pfama_url = "http://wwwdev.ebi.ac.uk/Tools/hmmer//annotation/pfama/9B22C480-CBD7-11E4-AADB-FCB7088B62CF";
