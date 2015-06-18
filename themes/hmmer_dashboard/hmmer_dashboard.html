@@ -7,6 +7,7 @@
 
 </head>
 <body>
+	<div id="viewer"> 
   <div id="main">
     <div class="container">
       <div class="row clearfix">
@@ -36,7 +37,7 @@
               <div class="col-md-6 column center-block">
                 <div class="row clearfix">
                   <h4>Domain architecture overview</h4>
-                  Showing <strong>domain architectures</strong> of the top 1000 hits<br>
+                  Showing top 5 <strong>domain architectures</strong> of the top <span id="total_curr_hits">1000</span> hits<br>
                   Click <a href=#>here</a> to view all <span id="total_curr_hits"></span> domain architectures.
                   <div id="domain_architecture_spinner" style="visibility:hidden">
                     Loading most occurring domain architectures.... <img src="http://www.ebi.ac.uk/Tools/hmmer//static/images/loading.gif" alt="Searching seq">
@@ -56,7 +57,7 @@
           <div class="row clearfix">
             <div class="col-md-6 column">
               <div class="row clearfix">
-                <h4>Top 1000 hits across the tree of life</h4>
+                <h4>Top <span id="total_curr_hits">1000</span> hits across the tree of life</h4>
                 Mouseover to get information. Click <a href=#>here</a> to load full tree.<br>
                 <span id="no_curr_hits"></span>
 
@@ -75,6 +76,7 @@
                   Loading top hits.... <img src="http://www.ebi.ac.uk/Tools/hmmer//static/images/loading.gif" alt="Searching seq">
                 </div>
                 <div id="pdb_div" style="width: 500; height: 400"></div>
+
 
               </div>
             </div>
@@ -95,8 +97,9 @@
     <script src="../../lib/hmmer_vendor.min.js"></script>
     <script src="hmmer_dashboard.js"></script>
     <script src="../../lib/hmmer_vis.min.js"></script>
-
-
+		
+		<script src='http://biasmv.github.io/pv/js/pv.min.js'></script>
+		<script data-main='demo' src='js/require.js'></script>
 
     <script>
     (function() {
@@ -104,5 +107,4 @@
       var theme = hmmer_theme_hmmer_dashboard();
       theme(document.getElementById("chart"));
     }());
-
     </script>
