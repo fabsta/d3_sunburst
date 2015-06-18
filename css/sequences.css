@@ -149,7 +149,7 @@ fill: #fff;
   color: #666;
   border: 1px solid #999;
   text-transform: uppercase;
-  /*font-weight: bold;*/
+  font-weight: bold;
   padding: .2em;
 }
 .top_hits .container-fluid{
