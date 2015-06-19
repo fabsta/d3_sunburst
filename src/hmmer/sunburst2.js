@@ -80,6 +80,7 @@ hmmer_vis.sunburst2 = function() {
 		path: undefined,
 		partition : undefined
 	};
+	
 	var base = {
 		tree : undefined,
 		data : undefined,

@@ -15,6 +15,7 @@ hmmer_vis.pdb_viewer = function() {
 	   antialias: true,
 	   quality : 'medium'
 	 };
+	 
 	 // insert the viewer under the Dom element with id 'gl'.
 	 var viewer = pv.Viewer(div, options);
 	 var width = d3.select("#pdb_div").style("width") 

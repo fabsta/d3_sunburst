@@ -69,20 +69,14 @@ var hmmer_theme_hmmer_dashboard = function() {
 	        if (typeof data.pdb !== 'undefined'){
 	          console.log("Found pdb entry: "+data.pdb);
 	          d3.select("#pdb_spinner").style("visibility", "hidden");
-	          d3.select("#pdb_div").text("Show pdb structure of "+data.pdb+" here");
+	          d3.select("#pdb_div").text("Pdb structure of "+data.pdb+"");
+			  hmmer_pdb_viewer(document.getElementById("pdb_div"), data.pdb);
 	        }
 	        if(typeof data.dom_architectures !== 'undefined'){
 	          console.log("Found dom_architectures entry: ");
 	          hmmer_domain_architectures_view(document.getElementById("domain_architectures_view"), data.dom_architectures);
 	          d3.select("#domain_architecture_spinner").style("visibility", "hidden");
 	        }
-			// load pdb viewer with pdb_id
-		
-		
-			//hmmer_pdb_viewer("pdb_div", "1fup"data.pdb);
-			if(typeof data.pdb !== 'undefined'){
-				hmmer_pdb_viewer(document.getElementById("pdb_div"), data.pdb);
-			}
 		  }, function(status) {
 		    alert('Something went wrong.');
 		  });
