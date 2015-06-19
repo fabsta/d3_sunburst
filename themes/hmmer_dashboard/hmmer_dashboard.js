@@ -80,7 +80,9 @@ var hmmer_theme_hmmer_dashboard = function() {
 		
 		
 			//hmmer_pdb_viewer("pdb_div", "1fup"data.pdb);
-			hmmer_pdb_viewer("pdb_div", "1fup");
+			if(typeof data.pdb !== 'undefined'){
+				hmmer_pdb_viewer(document.getElementById("pdb_div"), data.pdb);
+			}
 		  }, function(status) {
 		    alert('Something went wrong.');
 		  });
