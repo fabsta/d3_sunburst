@@ -60,6 +60,8 @@ var hmmer_theme_hmmer_dashboard = function() {
 			  document.getElementById("uuid_link_domain").href=results_url+"/"+uuid+"/domain"; 
 			  document.getElementById("uuid_link_taxonomy").href=results_url+"/"+uuid+"/taxonomy"; 
 			  
+			  http://www.ebi.ac.uk/pdbe/entry/pdb/1jcn
+			  
 	        d3.select("#top_hits_spinner").remove();
 	        hmmer_hits_viewer(document.getElementById("hits_viewer"), data);
 
@@ -76,7 +78,10 @@ var hmmer_theme_hmmer_dashboard = function() {
 	        if (typeof data.pdb !== 'undefined'){
 	          console.log("Found pdb entry: "+data.pdb);
 	          d3.select("#pdb_spinner").remove();
-	          d3.select("#pdb_text").text("Pdb structure of "+data.pdb+"");
+ 	 		 var pdb_entry,chain_id;
+ 	 		 (function(arr){ pdb_entry=arr[0]; chain_id=arr[1]; })(data.pdb.split("_"));
+ 			  
+	          d3.select("#pdb_text").html("Pdb structure of the best hit was <a href='http://www.ebi.ac.uk/pdbe/entry/pdb/"+pdb_entry+"'>"+data.pdb+"</a>");
 			  hmmer_pdb_viewer(document.getElementById("pdb_div"), data.pdb);
 	        }
 	        if(typeof data.dom_architectures !== 'undefined'){
