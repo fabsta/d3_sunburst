@@ -98,7 +98,7 @@ hmmer_vis.sunburst2 = function() {
 		.attr("id", "container")
 		// .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
 		.append("g")
-		.attr("transform", "translate(" + conf.width / 2 + "," + (conf.height / 2 + 10) + ")");
+		.attr("transform", "translate(" + conf.width / 3 + "," + (conf.height / 2 - 10) + ")");
 
 
 		curr.partition = d3.layout.partition()

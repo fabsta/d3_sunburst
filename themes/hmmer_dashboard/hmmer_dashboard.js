@@ -70,24 +70,28 @@ var hmmer_theme_hmmer_dashboard = function() {
 	        //   hmmer_sunburst(document.getElementById("chart"), JSON.parse(data.distTree), "dist_tree")
 	        //   d3.select("#taxonomy_view_spinner").style("visibility", "hidden");
 	        // }
+	        
+	        // domain architecture
+	        if(typeof data.dom_architectures !== 'undefined'){
+	          console.log("Found dom_architectures entry: ");
+	          hmmer_domain_architectures_view(document.getElementById("domain_architectures_view"), data.dom_architectures);
+	          d3.select("#domain_architecture_spinner").remove();
+	        }
+			// Tree
 	        if (typeof data.fullTree !== 'undefined'){
 	          console.log("Found fullTree entry: ");
 	          hmmer_sunburst(document.getElementById("chart"), JSON.parse(data.fullTree), "full_tree")
 	          d3.select("#taxonomy_view_spinner").remove();
 	        }
+			// PDB
 	        if (typeof data.pdb !== 'undefined'){
 	          console.log("Found pdb entry: "+data.pdb);
 	          d3.select("#pdb_spinner").remove();
- 	 		 var pdb_entry,chain_id;
+ 	 		 	var pdb_entry,chain_id;
  	 		 (function(arr){ pdb_entry=arr[0]; chain_id=arr[1]; })(data.pdb.split("_"));
  			  
 	          d3.select("#pdb_text").html("Pdb structure of the best hit was <a href='http://www.ebi.ac.uk/pdbe/entry/pdb/"+pdb_entry+"'>"+data.pdb+"</a>");
-			  hmmer_pdb_viewer(document.getElementById("pdb_div"), data.pdb);
-	        }
-	        if(typeof data.dom_architectures !== 'undefined'){
-	          console.log("Found dom_architectures entry: ");
-	          hmmer_domain_architectures_view(document.getElementById("domain_architectures_view"), data.dom_architectures);
-	          d3.select("#domain_architecture_spinner").remove();
+			  // hmmer_pdb_viewer(document.getElementById("pdb_div"), data.pdb);
 	        }
 		  }, function(status) {
 		    alert('Something went wrong.');
