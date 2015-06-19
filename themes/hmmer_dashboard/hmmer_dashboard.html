@@ -9,6 +9,7 @@
 <body>
 	<div id="viewer"> 
   <div id="main">
+	  <h4>Summary gives you a quick overview of the <span id="total_curr_hits"></span> hits</h4>
     <div class="container">
       <div class="row clearfix">
         <div class="col-md-12 column center-block">
@@ -25,8 +26,7 @@
               <div class="col-md-6 column">
                 <div class="row clearfix">
                   <h4>Top 10 hits</h4>
-                  Showing <strong>matching regions</strong> between the query sequence and the top 10 hits.
-                  <br>Click <a href=#>here</a> to view all <span id="total_curr_hits"></span> hits.
+                  Showing <strong>matching regions</strong> between the query sequence and the top 10 hits. (<a id="uuid_link_score" >Show all</a>).
                   <div id="top_hits_spinner" style="visibility:hidden">
                     Loading top hits.... <img src="http://www.ebi.ac.uk/Tools/hmmer//static/images/loading.gif" alt="Searching seq">
                   </div>
@@ -37,8 +37,7 @@
               <div class="col-md-6 column center-block">
                 <div class="row clearfix">
                   <h4>Domain architecture overview</h4>
-                  Showing top 5 <strong>domain architectures</strong> of the top <span id="total_curr_hits">1000</span> hits<br>
-                  Click <a href=#>here</a> to view all <span id="total_curr_hits"></span> domain architectures.
+                  Showing top 5 <strong>domain architectures</strong> of the top <span id="total_curr_hits">1000</span> hits. (<a id="uuid_link_domain" >Show all</a>)
                   <div id="domain_architecture_spinner" style="visibility:hidden">
                     Loading most occurring domain architectures.... <img src="http://www.ebi.ac.uk/Tools/hmmer//static/images/loading.gif" alt="Searching seq">
                   </div>
@@ -58,22 +57,22 @@
             <div class="col-md-6 column">
               <div class="row clearfix">
                 <h4>Top <span id="total_curr_hits">1000</span> hits across the tree of life</h4>
-                Mouseover to get information. Click <a href=#>here</a> to load full tree.<br>
+				Showing the taxonomic distribuion of hits. (<a id="uuid_link_taxonomy" >Show all</a>)<br>
                 <span id="no_curr_hits"></span>
-                <div id="explanation" style="visibility: hidden;">
-                    <div id="sequence"></div>
-                </div>
+               
                 <div id="taxonomy_view_spinner" style="visibility:hidden">
                   Loading taxonomy view.... <img src="http://www.ebi.ac.uk/Tools/hmmer//static/images/loading.gif" alt="Searching seq">
                 </div>
-
                 <div id="chart"> </div>
-
+                <div id="explanation" style="visibility: hidden;">
+                    <div id="sequence"></div>
+                </div>
               </div>
             </div>
             <div class="col-md-6 column center-block">
               <div class="row clearfix">
                 <h4>PDB best hit</h4>
+               <div id="pdb_text"></div>
                <div id="pdb_div"></div>
                 <div id="pdb_spinner" style="visibility:hidden">
                   Loading top hit.. <img src="http://www.ebi.ac.uk/Tools/hmmer//static/images/loading.gif" alt="Searching seq">

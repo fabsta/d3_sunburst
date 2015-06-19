@@ -8,6 +8,7 @@ var hmmer_theme_hmmer_dashboard = function() {
     var hmmer_sunburst = hmmer_vis.sunburst2();
     var hmmer_domain_architectures_view = hmmer_vis.domain_architectures_view();
 	var hmmer_pdb_viewer = hmmer_vis.pdb_viewer();
+	var results_url = "http://wwwdev.ebi.ac.uk/Tools/hmmer/results/";
     // start the spinners
     start_spinner();
     var hmmer_top_hits_url = "http://wwwdev.ebi.ac.uk/Tools/hmmer/results/"+uuid+"/dashboard/";
@@ -52,8 +53,14 @@ var hmmer_theme_hmmer_dashboard = function() {
 
 		  getJSON(hmmer_top_hits_url, function(data) {
 		  
+		  	  // set curr hits
 			  d3.selectAll("#total_curr_hits").text(data.stats.nincluded>1000?1000:data.stats.nincluded);
-	        d3.select("#top_hits_spinner").style("visibility", "hidden");
+			  // set links
+			  document.getElementById("uuid_link_score").href=results_url+"/"+uuid+"/score"; 
+			  document.getElementById("uuid_link_domain").href=results_url+"/"+uuid+"/domain"; 
+			  document.getElementById("uuid_link_taxonomy").href=results_url+"/"+uuid+"/taxonomy"; 
+			  
+	        d3.select("#top_hits_spinner").remove();
 	        hmmer_hits_viewer(document.getElementById("hits_viewer"), data);
 
 	        // if (typeof data.distTree !== 'undefined'){
@@ -64,18 +71,18 @@ var hmmer_theme_hmmer_dashboard = function() {
 	        if (typeof data.fullTree !== 'undefined'){
 	          console.log("Found fullTree entry: ");
 	          hmmer_sunburst(document.getElementById("chart"), JSON.parse(data.fullTree), "full_tree")
-	          d3.select("#taxonomy_view_spinner").style("visibility", "hidden");
+	          d3.select("#taxonomy_view_spinner").remove();
 	        }
 	        if (typeof data.pdb !== 'undefined'){
 	          console.log("Found pdb entry: "+data.pdb);
-	          d3.select("#pdb_spinner").style("visibility", "hidden");
-	          d3.select("#pdb_div").text("Pdb structure of "+data.pdb+"");
+	          d3.select("#pdb_spinner").remove();
+	          d3.select("#pdb_text").text("Pdb structure of "+data.pdb+"");
 			  hmmer_pdb_viewer(document.getElementById("pdb_div"), data.pdb);
 	        }
 	        if(typeof data.dom_architectures !== 'undefined'){
 	          console.log("Found dom_architectures entry: ");
 	          hmmer_domain_architectures_view(document.getElementById("domain_architectures_view"), data.dom_architectures);
-	          d3.select("#domain_architecture_spinner").style("visibility", "hidden");
+	          d3.select("#domain_architecture_spinner").remove();
 	        }
 		  }, function(status) {
 		    alert('Something went wrong.');
