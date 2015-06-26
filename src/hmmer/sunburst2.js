@@ -5,7 +5,7 @@ hmmer_vis.sunburst2 = function() {
 	var svg, nodes, color_index = {}, tree_legend,tooltip, images, i=0;
 	var conf = {
 		width: 680,
-		height: 330,
+		height: 350,
 		tree_type : '',
 		// radius: Math.min(conf.width, conf.height) / 2,
 		x: d3.scale.linear().range([0, 2 * Math.PI]),
@@ -98,7 +98,7 @@ hmmer_vis.sunburst2 = function() {
 		.attr("id", "container")
 		// .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
 		.append("g")
-		.attr("transform", "translate(" + conf.width / 3 + "," + (conf.height / 2 - 10) + ")");
+		.attr("transform", "translate(" + conf.width / 3 + "," + (conf.height / 2 ) + ")");
 
 
 		curr.partition = d3.layout.partition()
@@ -114,24 +114,8 @@ hmmer_vis.sunburst2 = function() {
 		.style("z-index", "10")
 		.style("opacity", 0);
 
-
-
-		// //Tooltip description
-		// 		var tooltip = d3.select("body")
-		// 			.append("div")
-		// 			.attr("id", "tooltip")
-		// 			.style("position", "absolute")
-		// 			.style("z-index", "10")
-		// 			.style("opacity", 0);
 		// Keep track of the node that is currently being displayed as the root.
 		var node;
-
-		// d3.json("../../data/taxon.json", function(error, root) {
-		// d3.json("../../data/ecoli_dist.json", function(error, root) {
-		// d3.json("../../data/ecoli_full.json", function(error, root) {
-		// d3.json("../../data/dist.json", function(error, root) {
-			// if (error) return console.warn(error);
-			// process_json(root);
 			curr.data = data;
 			sunburst2.data(data);
 			// curr.tree_type = "full_tree";
@@ -139,26 +123,15 @@ hmmer_vis.sunburst2 = function() {
 			sunburst2.update();
 			// we don't use breadcrumbs anymore, have our own lineage view now
 			initializeBreadcrumbTrail();
-			// node = root;
-			// if(tree_type == 'full_tree'){
-			// var total_hit_number = 0;
-
-		// });
 	};
 
 
 	sunburst2.update = function(){
-		// conf.tree_type = 'full_tree';
-		// if(conf.tree_type !== "dist_tree"){
+		// clean json
 		process_json(curr.data);
-
 		// tell the tree to update
 		hmmer_vis.dispatch.update_tree_legend({"message": "please update",
 		'tree_legend_data' : conf.tree_legend})
-
-
-		// }
-		//	d3.selectAll(".path_group").remove();
 		//enter selection
 		// curr.nodes = cluster.nodes(curr.data);
 		curr.predefined_nodes = curr.partition.nodes(curr.data)
@@ -170,11 +143,6 @@ hmmer_vis.sunburst2 = function() {
 		.sort(null)
 		.value(function(d) {
 			return d.count? d.count[0] : d.hit_number;
-			// if(sunburst2.tree_type() ==="full_tree") ){}
-			// else{
-			// 	return d.count[0];
-			// }
-			// d.hit_number;
 		});
 
 		var arc = d3.svg.arc()
@@ -200,7 +168,9 @@ hmmer_vis.sunburst2 = function() {
 		.attr("d", arc)
 		.attr("id", function(d){ return "id_"+d.short.replace(' ','');})
 		.style("fill", function(d) { return d.fill; })
-		.on("click", click)
+		// .on("click", click)
+		.on("click", _magnify)
+		
 		.on("mouseover", mouseover)
 		.on("mousemove", mousemove)
 		.each(function(d) {
@@ -212,7 +182,7 @@ hmmer_vis.sunburst2 = function() {
 		curr.enter_selection
 		.append("text")
 		.attr("text-anchor", "middle")
-		.text(function(d){return d.depth == 0 ? 'click to zoom in' : '';})
+		.text(function(d){return d.depth == 0 ? 'Mouse over' : '';})
 
 
 
@@ -282,8 +252,8 @@ hmmer_vis.sunburst2 = function() {
 					return output;
 				})(curr.predefined_nodes);
 
-				d3.select("#total_curr_hits").text(conf.total_hit_number);
-				d3.select("#total_curr_hits").style("visibility", "");
+				d3.select("#no_curr_hits").text(conf.total_hit_number);
+				d3.select("#no_curr_hits").style("visibility", "");
 
 				// set domain of colors scale based on data
 				// conf.color.domain(uniqueNames);
@@ -491,7 +461,7 @@ hmmer_vis.sunburst2 = function() {
 
 
 
-					d3.select("#no_curr_hits").text("Number of hits: "+d.hit_number+" ("+conf.total_hit_number+")");
+					d3.select("#no_curr_hits").text("Current level: "+d.short+" ("+d.hit_number+")");
 					d3.select("#no_curr_hits").style("visibility", "");
 
 

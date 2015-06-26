@@ -47,63 +47,7 @@ hmmer_vis.domain_architectures_view = function() {
 		.range([0, conf.div_width]);
 
 
-		var ul = d3.select(div).append("ul").attr("class", "top_hits");
-
-		// var li = ul.selectAll("li")
-// 		.data(conf.all_hits)
-// 		.enter()
-// 		.append("li")
-// 		.append('div').attr('class', 'container-fluid')
-// 		.append('div').attr('class', 'row');
-//
-//
-// 		// define the three columns
-// 		var left_blocks = li.append('div').attr('class', 'col-xs-4 col-md-2 col-lg-2 domain_info')
-// 		.append("span")
-// 		.attr("class", "block").html(function(d){
-// 			return d.dom_count+"<br>sequences";
-// 		});
-//
-// 		// left_blocks.append("span")
-// 		// .attr("class", "small").html(function(d){ return d.species; });
-// 		// middle
-// 		var middle_div = li.append('div').attr('class', 'col-xs-12 col-md-10 col-lg-10 domain_middle_container')
-//
-//
-//
-//
-// 		var middle_upper_div = middle_div.append("div").attr('class','row clearfix').append("div").attr('class','col-md-12 column')
-// 		var middle_lower_div = middle_div.append("div").attr('class','row clearfix').append("div").attr('class','col-md-12 column')
-//
-// 		var dom_arch_ids  = new Array();
-//
-//
-//
-//
-// 		var example_text = middle_upper_div.append("text")
-// 		.attr("class", "hit_legend")
-// 		.attr("x", function(d,i) { return 50; })
-// 		// .attr('y', function(d,i, j){
-// 		// 	// dom_arch_string = d
-// 		// 	return (i)*conf.row_height + conf.hit_offset+conf.hit_legend_top;
-// 		// })
-// 		.text(function(d){return "with domain architecture , example:"});
-//
-// 		var example_text = middle_lower_div.append("div").attr('id', function(d,i){
-// 			dom_arch_ids.push("dom_arch_graphic_"+i);
-// 			return "dom_arch_graphic_"+i;
-// 		})
-// 		for (var id of dom_arch_ids) {
-// 		   console.log(id);
-// 		// add pfam graphics here
-// 			var chart = new PfamGraphic("#"+id, example_sequence);
-// 			// var chart = new PfamGraphic();
-// 			chart.render();
-// 			var new_width = $("#"+id).parent().width();
-// 			new_width = 450;
-// 			 chart.resize( new_width, 200 );
-// 	 	}
-		
+		var ul = d3.select(div).append("ul").attr("class", "domains");
 		
 		var li = ul.selectAll("li")
 		.data(conf.all_hits)
@@ -119,7 +63,7 @@ hmmer_vis.domain_architectures_view = function() {
 		var li_link_show_all = li_link.append("span").attr('class', 'show').text("Show All")
 		
 		
-		var li_right = li.append('p').attr('class', 'right');
+		// var li_right = li.append('p').attr('class', 'right');
 
 		var li_text = li.append('p').html(function(d){
 			

@@ -51,7 +51,8 @@ var hmmer_theme_hmmer_dashboard = function() {
 		    xhr.send();
 		  };
 
-		  getJSON(hmmer_top_hits_url, function(data) {
+		   getJSON(hmmer_top_hits_url, function(data) {
+		//	  getJSON("../../data/stats.json", function(data) {
 		  
 		  	  // set curr hits
 			  d3.selectAll("#total_curr_hits").text(data.stats.nincluded>1000?1000:data.stats.nincluded);
@@ -80,18 +81,22 @@ var hmmer_theme_hmmer_dashboard = function() {
 			// Tree
 	        if (typeof data.fullTree !== 'undefined'){
 	          console.log("Found fullTree entry: ");
-	          hmmer_sunburst(document.getElementById("chart"), JSON.parse(data.fullTree), "full_tree")
+	          // hmmer_sunburst(document.getElementById("chart"), JSON.parse(data.fullTree), "full_tree")
+	          hmmer_sunburst(document.getElementById("chart"), JSON.parse(data.distTree), "dist_tree")
 	          d3.select("#taxonomy_view_spinner").remove();
 	        }
 			// PDB
 	        if (typeof data.pdb !== 'undefined'){
-	          console.log("Found pdb entry: "+data.pdb);
+				var pdb_hits = data.pdb.hits
+				var best_hit = pdb_hits[0]
+				var pdb_positions = data.pdb.pos.domains.map(function(domain){return [domain.iali,domain.jali]})
+	          console.log("Found pdb entry: "+best_hit);
 	          d3.select("#pdb_spinner").remove();
  	 		 	var pdb_entry,chain_id;
- 	 		 (function(arr){ pdb_entry=arr[0]; chain_id=arr[1]; })(data.pdb.split("_"));
+ 	 		 (function(arr){ pdb_entry=arr[0]; chain_id=arr[1]; })(best_hit.split("_"));
  			  
-	          d3.select("#pdb_text").html("Pdb structure of the best hit was <a href='http://www.ebi.ac.uk/pdbe/entry/pdb/"+pdb_entry+"'>"+data.pdb+"</a>");
-			  hmmer_pdb_viewer(document.getElementById("pdb_div"), data.pdb);
+	          d3.select("#pdb_text").html("Pdb structure of the best hit was <a href='http://www.ebi.ac.uk/pdbe/entry/pdb/"+pdb_entry+"'>"+best_hit+"</a><br>The matching region is highlighted.");
+			  hmmer_pdb_viewer(document.getElementById("pdb_div"), best_hit, pdb_positions,data.pdb.mapping);
 	        }
 		  }, function(status) {
 		    alert('Something went wrong.');

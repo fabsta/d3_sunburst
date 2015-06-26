@@ -9,7 +9,7 @@
 <body>
 	<div id="viewer"> 
   <div id="main">
-	  <h4>Summary gives you a quick overview of the <span id="total_curr_hits"></span> hits</h4>
+	  <h4>Summary gives you a quick overview of the best <span id="total_curr_hits">1000</span> hits</h4>
     <div class="container">
       <div class="row clearfix">
         <div class="col-md-12 column center-block">
@@ -62,14 +62,15 @@
             <div class="col-md-6 column  center-block">
               
                 <h4>Top <span id="total_curr_hits">1000</span> hits across the tree of life</h4>
-				<p>Showing the taxonomic distribuion of hits. (<a id="uuid_link_taxonomy" >Show all</a>)</p>
-                <span id="no_curr_hits"></span>
+				<p>Showing the taxonomic distribution of hits. (<a id="uuid_link_taxonomy" >Show all</a>)</p>
+                
                
                 <div id="taxonomy_view_spinner" style="visibility:hidden">
                   Loading taxonomy view.... <img src="http://www.ebi.ac.uk/Tools/hmmer//static/images/loading.gif" alt="Searching seq">
                 </div>
                 <div id="chart"> </div>
-                <div id="explanation" style="visibility: hidden;">
+                <span id="no_curr_hits"></span>
+				<div id="explanation" style="visibility: hidden;">
                     <div id="sequence"></div>
                 </div>
               
@@ -108,7 +109,7 @@
     (function() {
 
       var theme = hmmer_theme_hmmer_dashboard();
-      theme(document.getElementById("chart"),"AFAC61EA-1501-11E5-832E-04AF1AB9B3C4");
+      theme(document.getElementById("chart"),"A89A1632-1BEA-11E5-A630-16E31AB9B3C4");
     }());
     </script>
 

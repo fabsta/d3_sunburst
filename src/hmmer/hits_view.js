@@ -28,7 +28,8 @@ hmmer_vis.hits_view = function() {
 		// global svg settings
 		'div_width' : 400
 	};
-	var color = d3.scale.category20c();
+	//var color = d3.scale.category20c();
+	var color = ['990000','f9ea6d','009900','000099'];
 
 
 
@@ -47,12 +48,37 @@ hmmer_vis.hits_view = function() {
 
 		console.log("longest seq is "+conf.width);
 
+
+
 		axisScale = d3.scale.linear()
 		.domain([0, conf.width])
 		.range([0, conf.div_width]);
 
-
+		
 		var ul = d3.select(div).append("ul").attr("class", "top_hits");
+
+		// put the scale into an empty div
+		// add an axis
+		var header_li = ul.append("li")
+				.append('div').attr('class', 'container-fluid')
+				.append('div').attr('class', 'row');
+		var left_header_div = header_li.append('div').attr('class', 'col-xs-4 col-md-2 col-lg-2 ')
+		var middle_header_div = header_li.append('div').attr('class', 'col-xs-12 col-md-8 col-lg-8 middle_container')
+		var right_header_div = header_li.append('div').attr('class', 'col-xs-4 col-md-2 col-lg-2')
+		
+		left_header_div
+				.append("span")
+				.attr("class", "hit_info").html(function(d){ return "<b>Gene name</b><br><i>Species</i>"; });
+		
+		right_header_div.append("p").attr('class','score_info').append("span")
+				.attr('class', 'hit_legend')
+				.html(function(d){return "<b>Evalue</b><br><i>BitScore</i>"});
+		
+		// AXIS
+		middle_header_div.append('svg').attr('height', 20).append("g").attr("class","axis")
+		.call(d3.svg.axis()
+        .scale(axisScale)
+        .orient("bottom"));
 
 		var li = ul.selectAll("li")
         .data(conf.all_hits)
@@ -60,6 +86,7 @@ hmmer_vis.hits_view = function() {
         .append("li")
 				.append('div').attr('class', 'container-fluid')
 				.append('div').attr('class', 'row');
+
 
 
 // define the three columns
@@ -79,10 +106,14 @@ hmmer_vis.hits_view = function() {
 		var middle_div = li.append('div').attr('class', 'col-xs-12 col-md-8 col-lg-8 middle_container')
 
 // right
-		var rigth_blocks = li.append('div').attr('class', 'col-xs-4 col-md-2 col-lg-2')
-				.append("p").attr('class','right').append("span")
-				.attr('class', 'hit_legend')
-				.html(function(d){return d.evalue;});
+		var rigth_blocks_div = li.append('div').attr('class', 'col-xs-4 col-md-2 col-lg-2  score_info')
+		// E-value
+				rigth_blocks_div
+				.append("span")
+				.attr("class", "score_info").html(function(d){ return "<b>"+d.evalue+"</b><br>"; });
+
+				rigth_blocks_div.append("span")
+				.attr("class", "score_info").html(function(d){ return "<i>"+d.score+"</i>"; });
 
 
 
@@ -133,7 +164,7 @@ hmmer_vis.hits_view = function() {
 		.attr("x", function(d) { return axisScale(d.from) })
 		// .attr('y', function(d,i, j){ return (j)*conf.row_height + conf.hit_offset })
 		.attr("width", function(d) { return axisScale(d.to - d.from)  })
-		.style("fill", function(d) { return color(d.count) });
+		.style("fill", function(d) { return color[d.count] });
 
 
 
@@ -193,7 +224,7 @@ hmmer_vis.hits_view = function() {
 		.attr('stroke','none')
 		.attr('opacity',1)
 		.attr('fill-opacity',1)
-		.style("fill", function(d) { return "url(#domain_gradient)"; })
+		.style("fill", function(d) { return color[d.count] ; })
 
 		// target_matches.append('path')
 		// .attr('d', function(d,i){ return draw_domain(axisScale(d.jenv-d.ienv), 20) })
