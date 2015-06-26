@@ -33,6 +33,7 @@ hmmer_vis.hits_view = function() {
 
 
 
+
 	// The cbak returned
 	var hits_view = function(div, data) {
 
