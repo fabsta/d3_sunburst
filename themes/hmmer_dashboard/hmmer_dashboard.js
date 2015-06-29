@@ -95,7 +95,7 @@ var hmmer_theme_hmmer_dashboard = function() {
  	 		 	var pdb_entry,chain_id;
  	 		 (function(arr){ pdb_entry=arr[0]; chain_id=arr[1]; })(best_hit.split("_"));
  			  
-	          d3.select("#pdb_text").html("Pdb structure of the best hit was <a href='http://www.ebi.ac.uk/pdbe/entry/pdb/"+pdb_entry+"'>"+best_hit+"</a><br>The matching region is highlighted.");
+	          
 			  hmmer_pdb_viewer(document.getElementById("pdb_div"), best_hit, pdb_positions,data.pdb.mapping);
 	        }
 		  }, function(status) {

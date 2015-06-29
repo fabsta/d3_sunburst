@@ -734,7 +734,7 @@ var kingdom_colors_legend = [{'taxon': 'Bacteria','color' : '#900'},
 							<li class='euk'><span>Eukaryota</span></li>\
 							<li class='arc'><span>Archaea</span></li>\
 							<li class='vir'><span>Viruses</span></li>\
-							<li class='unc'><span>Unclass.</span></li>\
+							<li class='unc'><span>Unclassified sequences</span></li>\
 							<li class='oth'><span>Other</span></li>\
 						</ul>");
 

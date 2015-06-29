@@ -110,8 +110,11 @@ hmmer_vis.hits_view = function() {
 		.append("span")
 		.attr("class", "gene_name").html(function(d){ return "<b>"+d.name+"</b>"; });
 
-		left_blocks.append("span")
-		.attr("class", "species_info").html(function(d){ return "<i>"+d.species+"</i>"; });
+		//left_blocks.append("span")
+		//.attr("class", "species_info").html(function(d){ 
+		//	var full_species = d.species;
+			
+		//	return "<i>"+(d.species).substring(0,30)+"</i>"; });
 
 // middle
 		var middle_div = li.append('div').attr('class', 'col-xs-12 col-md-8 col-lg-8 middle_container')
