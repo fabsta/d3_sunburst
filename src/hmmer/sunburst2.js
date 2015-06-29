@@ -17,7 +17,7 @@ hmmer_vis.sunburst2 = function() {
 		// Breadcrumb dimensions: width, height, spacing, width of tip/tail.
 		breadcrumb_dim : { w: 75, h: 30, s: 3, t: 10},
 		opacity : {full_fadeout: 0.3},
-		legend_li : {w: 65, h: 10, s: 3, r: 3},
+		legend_li : {w: 85, h: 10, s: 3, r: 3},
 		image_folder: "../../data/images/",
 		total_hit_number: 0,
 		node_stats : {},
@@ -29,11 +29,21 @@ hmmer_vis.sunburst2 = function() {
 						  // 'Eukaryota' : '#666600', 
 						  'Eukaryota' :'#999900',
 						  // 'Eukaryota' :'#f3c800',
-						  'Archeae': '#009dcc',
+						  'Archaea': '#009dcc',
 						   'Virus' : '#ff0000',
 					      'Unclassified': '#999',
 							'oth': '#333'
 	}
+var kingdom_colors_legend = [{'taxon': 'Bacteria','color' : '#900'},
+					  // 'Eukaryota' : '#666600', 
+					  // {'taxon': 'Eukaryota','color' :'#999900'},
+						{'taxon':'Eukaryota','color' :'#f3c800'},
+					  {'taxon': 'Archeae','color': '#009dcc'},
+					   {'taxon': 'Virus','color' : '#ff0000'},
+				      {'taxon': 'Unclassified','color': '#999'},
+						{'taxon': 'oth','color': '#333'}
+					]
+
 
 	var count = 0;
 	conf.radius = Math.min(conf.width, conf.height) / 2;
@@ -181,9 +191,9 @@ hmmer_vis.sunburst2 = function() {
 		.attr("id", function(d){ return "id_"+d.short.replace(' ','');})
 		.style("fill", function(d) { 
 			if(d.fill){
-				console.log("current is: "+d.fill);
+				// console.log("current is: "+d.fill);
 				var new_color = d3.rgb(d.fill).brighter(.2 * d.depth);
-				console.log("new is "+new_color);
+				// console.log("new is "+new_color);
 				return new_color;
 			}
 			else{
@@ -191,7 +201,6 @@ hmmer_vis.sunburst2 = function() {
 					var parent_color = d.parent.color;
 					var brighter_color = d3.rgb(parent_color).brighter(.2 * d.depth);
 					d.fill = brighter_color;
-					
 					return brighter_color;
 				}
 				else{return "white"}
@@ -288,7 +297,7 @@ hmmer_vis.sunburst2 = function() {
 				// conf.color.domain(uniqueNames);
 
 				// make sure this is done after setting the domain
-				// drawLegend();
+				drawLegend(kingdom_colors_legend);
 
 			}
 
@@ -334,6 +343,7 @@ hmmer_vis.sunburst2 = function() {
 						d.hits_distribution = d[7];
 						d.unknown = d[8];
 						d.moreCount = d[9];
+						d.long = d.short;
 					}
 					else{
 						d.hit_number = d.count ? d.count[0]  :0;
@@ -623,7 +633,7 @@ hmmer_vis.sunburst2 = function() {
 				function fill(d) {
 					var p = d;
 					while (p.depth > 1) p = p.parent;
-					if(p.parent == 0){
+					if(p.parent == 0 || typeof p.parent ==='undefined'){
 						if(kingdom_colors.hasOwnProperty(p.long)){
 						   	d.color = kingdom_colors[p.long]
 							return d.color;
@@ -712,57 +722,61 @@ hmmer_vis.sunburst2 = function() {
 
 					}
 
-					function drawLegend() {
+					function drawLegend(kingdom_colors) {
 
 						// Dimensions of legend item: width, height, spacing, radius of rounded rect.
 						var li = conf.legend_li;
 						// make sure to remove old legend first
-						d3.select("#legend svg").remove();
-						var no_levels = conf.color.domain().length;
 
+
+						d3.select("#legend").html("<ul class='first'> \
+							<li class='bact'><span>Bacteria</span></li>\
+							<li class='euk'><span>Eukaryota</span></li>\
+							<li class='arc'><span>Archaea</span></li>\
+							<li class='vir'><span>Viruses</span></li>\
+							<li class='unc'><span>Unclass.</span></li>\
+							<li class='oth'><span>Other</span></li>\
+						</ul>");
+
+						// d3.select("#legend svg").remove();
+						return;
+						var no_levels = conf.color.domain().length;
+						
 
 						var legend = d3.select("#legend").append("svg:svg")
-						.attr("width", li.w * 3)
+						.attr("width", li.w * kingdom_colors.length)
 						// .attr("height", colors.domain().length * (li.h + li.s))
-						.attr("height", no_levels * 13)
-						;
+						.attr("height", li.h);
+
 						var g = legend.selectAll("g")
-						.data(conf.color.domain())
+						.data(kingdom_colors)
 						.enter().append("svg:g")
 						.attr("transform", function(d, i) {
-							return "translate("+predefined_views[d.toLowerCase()]*55+"," + i * (li.h + li.s) + ")";
+							return "translate(" + i * li.w + ",0)";
 							// return "translate(" + i * (li.h + li.s) + ","+predefined_views[d.toLowerCase()]*55+"";
 						});
 
 						g.append("svg:rect")
 						.attr("rx", li.r)
 						.attr("ry", li.r)
-						.attr("width", li.w)
+						.attr("width", li.h)
 						.attr("height", li.h)
 						.style("fill", function(d) {
-							if(d.color){
-								return d.color;
-							}
-							else{
-								var parent_color = d.parent.color
-								
-								brighter_color = d3.rgb(parent_color).brighter(.2 * d.depth)
-								d.color = d.parent.color
-								return brighter_color
-							}
-							var test3 = d.fill;
-							return color_index[d.toLowerCase()];
+							var test = d.color;
+							var test = d.taxon;
+							return d.color;
 						});
 
 						g.append("svg:text")
-						.attr("x", li.w / 2)
+						.attr("x", 40)
 						.attr("y", li.h / 2)
 						.attr("dy", "0.35em")
 						.attr("text-anchor", "middle")
 						.text(function(d) {
 							var test;
-							return d+" ("+conf.node_stats[d.toLowerCase()]+")"; });
-						}
+							return d.taxon; 
+						});
+					}
 
 						function toggleLegend() {
 							var legend = d3.select("#legend");
