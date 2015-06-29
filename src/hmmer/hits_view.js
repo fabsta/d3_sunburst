@@ -105,10 +105,28 @@ hmmer_vis.hits_view = function() {
 
 		// left_blocks.append("span")
 		// .attr("class", "hit_count").html(function(d,i){ return "Hit: "+parseInt(i+1); });
-
 		left_blocks
-		.append("span")
-		.attr("class", "gene_name").html(function(d){ return "<b>"+d.name+"</b>"; });
+		.append("div")
+		.attr("class",function(d){
+			return "hit_list "+d.kg;
+		}).append("span")
+		.attr("class", "hit_list_kg")
+		.html(function(d){ 
+				// var element<li class='bact'><span>Bacteria</span></li>\
+
+			// var gene_name = "<span class="++"></span><b>"+d.name+"</b>";
+			return "<b>"+d.name+"</b>"; 
+		});
+		
+		
+		d3.select("#legend").html("<ul class='first'> \
+			<li class='bact'><span>Bacteria</span></li>\
+			<li class='euk'><span>Eukaryota</span></li>\
+			<li class='arc'><span>Archaea</span></li>\
+			<li class='vir'><span>Viruses</span></li>\
+			<li class='unc'><span>Unclassified sequences</span></li>\
+			<li class='oth'><span>Other</span></li>\
+		</ul>");
 
 		//left_blocks.append("span")
 		//.attr("class", "species_info").html(function(d){ 

@@ -99,6 +99,39 @@ fill: #fff;
 }
 
 
+.top_hits .hit_list .hit_list_kg{
+	margin-left:7px;
+}
+
+.top_hits .hit_list {
+	width: 5px; 
+	display: inline-block; 
+}
+
+.Bacteria {
+	background-color: #900; 
+}
+.Eukaryota {
+	background-color: #f3c800; 
+}
+.Archaea {
+	background-color: #009dcc; 
+}
+.Eukaryota {
+	background-color: #f3c800; 
+}
+.Viruses {
+	background-color: #ff0000; 
+}
+.Unclassified {
+	background-color: #999; 
+}
+.Other {
+	background-color: #333; 
+}
+
+
+
 .top_hits .hit_info {
   padding-top: 10px;
   font-size: 8px;
