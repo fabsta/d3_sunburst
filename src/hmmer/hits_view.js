@@ -58,14 +58,7 @@ hmmer_vis.hits_view = function() {
 		conf.width = conf.longest_hit > conf.query_length ? conf.longest_hit : conf.query_length;
 
 		console.log("longest seq is "+conf.width);
-
-
-
-		axisScale = d3.scale.linear()
-		.domain([0, conf.width])
-		.range([0, conf.div_width]);
-
-		
+		axisScale = d3.scale.linear().domain([0, conf.width]).range([0, conf.div_width]);
 		var ul = d3.select(div).append("ul").attr("class", "top_hits");
 
 		// put the scale into an empty div
@@ -77,21 +70,27 @@ hmmer_vis.hits_view = function() {
 		var middle_header_div = header_li.append('div').attr('class', 'col-xs-12 col-md-8 col-lg-8 middle_container')
 		var right_header_div = header_li.append('div').attr('class', 'col-xs-4 col-md-2 col-lg-2')
 		
+		
+	
 		left_header_div
 				.append("span")
-				.attr("class", "hit_info").html(function(d){ return "<b>Gene name</b><br><i>Species</i>"; });
+				.attr("class", "hit_info").html(function(d){ return "<b>Gene name</b>"; });
 		
 		right_header_div.append("p").attr('class','score_info').append("span")
 				.attr('class', 'hit_legend')
 				.html(function(d){return "<b>Evalue</b><br><i>BitScore</i>"});
 		
 		// AXIS
-		middle_header_div.append('svg').attr('height', 20).append("g").attr("class","axis")
+		middle_header_div.append('svg').attr('height', 25).attr('width',conf.div_width-10)
+				.append("g").attr("class","axis").attr("transform","translate(3,20)")
 		.call(d3.svg.axis()
         .scale(axisScale)
-        .orient("bottom"));
+        .orient("top"));
 
-		var li = ul.selectAll("li")
+
+		var hits_ul = d3.select(div).append("ul").attr("class", "top_hits");
+
+		var li = hits_ul.selectAll("li")
         .data(conf.all_hits)
         .enter()
         .append("li")
@@ -106,10 +105,12 @@ hmmer_vis.hits_view = function() {
 		// left_blocks.append("span")
 		// .attr("class", "hit_count").html(function(d,i){ return "Hit: "+parseInt(i+1); });
 		left_blocks
+		// .append("div").html(function(d,i){return i;})
 		.append("div")
 		.attr("class",function(d){
 			return "hit_list "+d.kg;
-		}).append("span")
+		})
+		.append("span")
 		.attr("class", "hit_list_kg")
 		.html(function(d){ 
 				// var element<li class='bact'><span>Bacteria</span></li>\
@@ -119,14 +120,6 @@ hmmer_vis.hits_view = function() {
 		});
 		
 		
-		d3.select("#legend").html("<ul class='first'> \
-			<li class='bact'><span>Bacteria</span></li>\
-			<li class='euk'><span>Eukaryota</span></li>\
-			<li class='arc'><span>Archaea</span></li>\
-			<li class='vir'><span>Viruses</span></li>\
-			<li class='unc'><span>Unclassified sequences</span></li>\
-			<li class='oth'><span>Other</span></li>\
-		</ul>");
 
 		//left_blocks.append("span")
 		//.attr("class", "species_info").html(function(d){ 
@@ -162,7 +155,9 @@ hmmer_vis.hits_view = function() {
 		.attr("class", "hit_bar")
 		.attr("x", 0)
 		// .attr('y', function(d,i, j){ return (i)*conf.row_height + conf.hit_offset + 15; })
-		.attr("width", function(d) { return axisScale(d.hit_pos.target.len); })
+		.attr("width", function(d) { 
+			var test;
+			return axisScale(d.hit_pos.target.len); })
 		.attr("height", 4.5)
 		.attr('r', 0)
 		.attr('ry', 0)
