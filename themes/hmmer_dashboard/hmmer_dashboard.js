@@ -81,7 +81,7 @@ var hmmer_theme_hmmer_dashboard = function() {
 			// Tree
 	        if (typeof data.fullTree !== 'undefined'){
 	          console.log("Found fullTree entry: ");
-	           hmmer_sunburst(document.getElementById("chart"), JSON.parse(data.fullTree), "full_tree")
+	          hmmer_sunburst(document.getElementById("chart"), JSON.parse(data.fullTree), "full_tree")
 	          // hmmer_sunburst(document.getElementById("chart"), JSON.parse(data.distTree), "dist_tree")
 	          d3.select("#taxonomy_view_spinner").remove();
 	        }

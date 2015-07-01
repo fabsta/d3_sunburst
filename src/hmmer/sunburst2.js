@@ -638,7 +638,7 @@ var kingdom_colors_legend = [{'taxon': 'Bacteria','color' : '#900'},
 						   	d.color = kingdom_colors[p.long]
 							return d.color;
 						}
-					}
+					}	
 					return '';
 					var c = d3.lab(conf.hue(p.short));
 					c.l = conf.luminance(d.hit_number);

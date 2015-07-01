@@ -23,9 +23,9 @@
   height: 70px;
 }
 
-#legend {
+/*#legend {
   padding: 10px 0 0 3px;
-}
+} */
 
 /*#sequence text, #legend text {
 font-weight: 300;
@@ -133,7 +133,7 @@ fill: #fff;
 
 
 .top_hits .hit_info {
-  padding-top: 10px;
+  padding-top: 18px;
   font-size: 8px;
 }
 

@@ -28,23 +28,43 @@ hmmer_vis.hits_view = function() {
 		// global svg settings
 		'div_width' : 400
 	};
-	//var color = d3.scale.category20c();
-	var color = ['#990000','#f9ea6d','#009900','#000099'];
+	 var color = d3.scale.category10();
+	 // var color = ['#990000','#f9ea6d','#009900','#000099'];
 
 
 
 
 	// The cbak returned
 	var hits_view = function(div, data) {
-
 		// to plot the colors correctly, we need to add a value to d.domains
 		for (var index = 0; index < data.found_hits.length; ++index) {
 			var current_hit = data.found_hits[index]
 			var ndom = current_hit.ndom;
+			var hits_colors = {};
+			var unique_hit = 0;
 			for (var domain_index = 0; domain_index < current_hit.domains.length; ++domain_index) {
 				var current_domain = current_hit.domains[domain_index]
 				current_domain.count = ndom-1;
-				var changed = 0
+				var changed = 0,overlap_detected=0;
+				
+				// set the colors
+				//ok, if query overlaps with existing one --> no new color
+				for (var uh in hits_colors) {
+					var curr_from = current_domain.alihmmfrom, dict_to = hits_colors[uh]['to'], curr_to = current_domain.alihmmto, dict_from = hits_colors[uh]['from'];
+					if(curr_from < dict_from && curr_to > dict_from){
+						//overlap: no new color
+						overlap_detected=1;
+					}
+				}
+				if(overlap_detected){
+					current_domain.query_color = color(unique_hit);
+				}
+				else{
+					// add new color for unique hit
+					current_domain.query_color = color(++unique_hit);
+					var coordinates = {'from':current_domain.alihmmfrom, 'to': current_domain.alihmmto, 'color': current_domain.query_color};
+					hits_colors[unique_hit] = coordinates; 				
+				}
 			}			
 		}
 		// number of hits
@@ -53,8 +73,8 @@ hmmer_vis.hits_view = function() {
 		conf.height = conf.no_hits * conf.row_height;
 
 		// determine longest hit
-		conf.longest_hit = d3.max(data.found_hits, function(d) { return d.hit_pos.target.len; });
-		conf.query_length = d3.max(data.found_hits, function(d) { return d.hit_pos.query.len; });
+		conf.longest_hit = d3.max(data.found_hits, function(d,i) { return i>conf.no_hits ? 0:d.hit_pos.target.len; });
+		conf.query_length = d3.max(data.found_hits, function(d,i) { return i>conf.no_hits ? 0:d.hit_pos.query.len; });
 		conf.width = conf.longest_hit > conf.query_length ? conf.longest_hit : conf.query_length;
 
 		console.log("longest seq is "+conf.width);
@@ -140,11 +160,16 @@ hmmer_vis.hits_view = function() {
 
 
 
+		var middle_svg = middle_div.append("div").attr('class','middle_div')
+				.append('svg')
+				.attr('height', 40).attr('width',conf.div_width-10).append('g').attr("transform", "translate(0,5)");
+
+				
+			
+
+
 		// the domains
-		var query_seq_matches_svg = middle_div.append("div").attr('class','query_div')
-		.append('svg')
-		.attr('height', 20)
-		// .attr('width', )
+		var query_seq_matches_svg = middle_svg
 		.append("g")
 		set_colors(query_seq_matches_svg);
 
@@ -153,9 +178,7 @@ hmmer_vis.hits_view = function() {
 		.attr("class", "hit_bar")
 		.attr("x", 0)
 		// .attr('y', function(d,i, j){ return (i)*conf.row_height + conf.hit_offset + 15; })
-		.attr("width", function(d) { 
-			var test;
-			return axisScale(d.hit_pos.target.len); })
+		.attr("width", function(d) { return axisScale(d.hit_pos.query.len); })
 		.attr("height", 4.5)
 		.attr('r', 0)
 		.attr('ry', 0)
@@ -163,51 +186,51 @@ hmmer_vis.hits_view = function() {
 		.attr('stroke','none')
 		.attr('opacity',1)
 		.attr('fill-opacity',1)
-		.style("fill", function(d) { return "url(#line_gradient1)"; })
+		.style("fill", function(d) { return "url(#line_gradient)"; })
 
 
 		// add length
-		query_seq_matches_svg.append("text")
-		.attr("class", "hit_legend")
-		.attr("x", function(d,i) { return axisScale(d.hit_pos.target.len)+2; })
-		// .attr('y', function(d,i, j){
-		// 	return (i)*conf.row_height + conf.hit_offset+conf.hit_legend_bottom;
-		// })
-		.text(function(d){return d.hit_pos.target.len});
+		// query_seq_matches_svg.append("text")
+// 		.attr("class", "hit_legend")
+// 		.attr("x", function(d,i) { return axisScale(d.hit_pos.target.len)+2; })
+// 		// .attr('y', function(d,i, j){
+// 		// 	return (i)*conf.row_height + conf.hit_offset+conf.hit_legend_bottom;
+// 		// })
+//.text(function(d){return d.hit_pos.target.len});
 
 
 		// bind the domains
-		var query_seq_matches = query_seq_matches_svg.selectAll("g")
-		.data(function(d) { return d.hit_pos.query.hits; })
-		.enter();
-		// // plot the hits
-		query_seq_matches.append("rect")
-		.attr("height", conf.hit_height)
-		// y.rangeBand())
-		.attr('ry', 2)
-		.attr('rx', 2)
-		.attr("x", function(d) { return axisScale(d.from) })
-		// .attr('y', function(d,i, j){ return (j)*conf.row_height + conf.hit_offset })
-		.attr("width", function(d) { return axisScale(d.to - d.from)  })
-		.style("fill", function(d) { return color[d.count] });
+		// var query_seq_matches = query_seq_matches_svg.selectAll("g")
+// 		.data(function(d) { return d.hit_pos.query.hits; })
+// 		.enter();
+// 		// // plot the hits
+// 		query_seq_matches.append("rect")
+// 		.attr("height", conf.hit_height)
+// 		// y.rangeBand())
+// 		.attr('ry', 2)
+// 		.attr('rx', 2)
+// 		.attr("x", function(d) { return axisScale(d.from) })
+// 		// .attr('y', function(d,i, j){ return (j)*conf.row_height + conf.hit_offset })
+// 		.attr("width", function(d) { return axisScale(d.to - d.from)  })
+// 		.style("fill", function(d) { return color[d.count] });
+
 
 
 
 
 
 		// the target seq
-		var target_matches_svg = middle_div.append("div").attr('class','target_div')
-		.append('svg')
-		.attr('height', 20)
-		.attr('width', '100%')
-		.attr("transform", "translate(10,10)")
-		.append('g')
+		var target_matches_svg = middle_svg
+		.append('g').attr('class','');
 		set_colors(target_matches_svg);
 
-		target_matches_svg.append("rect")
+		var target_area = target_matches_svg.append('g').attr("transform", "translate(0,10)")
+		
+		target_area.append("rect")
 		// y.rangeBand())
 		.attr("class", "hit_bar")
 		.attr("x", 0)
+		.attr("y", 5)
 		// .attr('y', function(d,i, j){ return (i)*conf.row_height + conf.hit_offset + 15; })
 		.attr("width", function(d) { return axisScale(d.hit_pos.target.len); })
 		.attr("height", 4.5)
@@ -218,9 +241,9 @@ hmmer_vis.hits_view = function() {
 		.attr('opacity',1)
 		.attr('fill-opacity',1)
 		.style("fill", function(d) { return "url(#line_gradient)"; })
-
+//
 		// add description
-		target_matches_svg.append("text")
+		target_area.append("text")
 		.attr("class", "hit_description small")
 		// .attr("x", function(d,i) { return axisScale(d.hit_pos.target.len)+2; })
 		 .attr('y', 20)
@@ -233,241 +256,66 @@ hmmer_vis.hits_view = function() {
 		
 
 
-		var target_matches = target_matches_svg.selectAll("g")
+		var target_matches = target_matches_svg.append("g").attr("transform", "translate(0,4)").selectAll("g")
 		.data(function(d) { return d.domains })
 		.enter();
 
 
-		target_matches.append("rect")
-		// y.rangeBand())
-		.attr("class", "hit_match")
-		.attr("x", function(d){ return  axisScale(d.ienv)})
-		// .attr('y', function(d,i, j){ return (i)*conf.row_height + conf.hit_offset + 15; })
+
+		target_matches.append('path')
+	    .attr('d', function(d,i){
+	      return draw_domain_hit(d,axisScale);
+	    })
+	     .attr('opacity', function(d){return d.oasc;})
+		.attr('stroke', '#000')
+		.attr('stroke-dasharray',"2,2")
+	     .attr('fill', 'none')
+
+		// now draw domain matches
+		target_matches.append('rect')
 		.attr("width", function(d) { return axisScale(d.jenv-d.ienv); })
 		.attr("height", 4.5)
+		.attr("x",function(d){return axisScale(d.ienv)})
+		.attr("y",10)
 		.attr('r', 0)
-		.attr('ry', 0)
-		.attr('rx', 0)
-		.attr('stroke','none')
-		.attr('opacity',1)
-		.attr('fill-opacity',1)
-		.style("fill", function(d) { 
-			var test= d.count;
-			return color[d.count] });
-		// target_matches.append('path')
-		// .attr('d', function(d,i){ return draw_domain(axisScale(d.jenv-d.ienv), 20) })
-		// .attr('stroke', '#000')
-		// .attr('fill', 'rgba(0,0,0,0)')
-		// .attr('stroke-dasharray', '5,5')
-		// .attr("transform", function(d,i,j){
-		// 	var x_coord = axisScale(d.ienv);
-		// 	var y_coord = 0;
-		// 	// x_coord = 20;
-		// 	return "translate("+x_coord+","+y_coord+")"	;
-		// })
-
-
-
-
-
-		//  target_matches.append('path')
-		// .attr('d', function(d,i){
-		// 	// var line_path = "L0,0"+
-		// 	return draw_domain(axisScale(d.jenv-d.ienv), 15);
-		// })
-		// .attr('stroke', '#000')
-		// .attr('fill', 'rgba(0,0,0,0)')
-		// .attr('stroke-dasharray', '5,5')
-		// .attr('fill', function(d){
-		// 	return "url(#domain_gradient)"
-		// })
-		// .attr("transform", function(d,i,j){
-		// 	var x_coord = axisScale(d.ienv);
-		// 	var y_coord = (j)*conf.row_height + conf.hit_offset + 10;
-		// 	// x_coord = 20;
-		// 	return "translate("+x_coord+","+y_coord+")"	;
-		// })
-
-
-
-		// var hits = hits.selectAll(".single_hit")
-		// .data(conf.all_hits, keyFunction)
-		// .enter().append("li")
-		// .attr("class", "hit_container")
-		//
-		//
-		// var target_matches = hits.selectAll("rect")
-		// .data(function(d) { return d.domains; })
-		// .enter();
-		//
-		// var query_seq_matches = hits.selectAll("rect")
-		// .data(function(d) { return d.hit_pos.query.hits; })
-		// .enter();
-		//
-		//
-		// //evalue
-		// hits.append("rect")
-		// .attr("height", function(d){ return conf.row_height;})
-		// .attr("width", function(d) { return conf.div_width+170; })
-		// .style("opacity", function(d,i,j){ return 0.5;})
-		// .style("fill", function(d,i,j){ return i%2==0 ? "#e6e6e6":"#FFFFFF";})
-		// .attr("x", function(d,i) { return -100 })
-		// .attr('y', function(d,i, j){
-		// 	return (i)*conf.row_height + conf.hit_offset +conf.hit_legend_top - 13;
-		// })
-		//
-		//
-		//
-		// hits.append("rect")
-		// // y.rangeBand())
-		// .attr("class", "hit_bar")
-		// .attr("x", 0)
-		// .attr('y', function(d,i, j){ return (i)*conf.row_height + conf.hit_offset + 15; })
-		// .attr("width", function(d) { return axisScale(d.hit_pos.target.len); })
-		// .attr("height", 4.5)
-		// .attr('r', 0)
-		// .attr('ry', 0)
-		// .attr('rx', 0)
-		// .attr('stroke','none')
-		// .attr('opacity',1)
-		// .attr('fill-opacity',1)
-		// .style("fill", function(d) { return "url(#line_gradient)"; })
-		//
-		//
-		//
-		// //QUERY
-		// // hits.append("text")
-		// // .attr("class", "hit_legend")
-		// // .attr("x", function(d,i) {return -30;})
-		// // .attr('y', function(d,i, j){return (i)*conf.row_height + conf.hit_offset+conf.hit_legend_top;})
-		// // .text("Query");
-		//
-		//
-		// hits.append("text")
-		// .attr("class", "hit_legend")
-		// .attr("x", function(d,i) {return -80;})
-		// .attr('y', function(d,i, j){return (i)*conf.row_height + conf.hit_offset+conf.hit_legend_bottom;})
-		// .text(function(d){return d.acc});
-		//
-		// hits.append("text")
-		// .attr("class", "hit_number")
-		// .attr("x", function(d,i) {return -80;})
-		// .attr('y', function(d,i, j){return (i)*conf.row_height + conf.hit_offset+conf.hit_legend_top;})
-		// // .text(function(d,i){return "Hit: "+parseInt(i+1);});
-		// .text(function(d,i){return parseInt(i+1);});
-		//
-		//
-		//
-		// // seq length target
-		// hits.append("text")
-		// .attr("class", "hit_legend")
-		// .attr("x", function(d,i) { return axisScale(d.hit_pos.target.len)+2; })
-		// .attr('y', function(d,i, j){
-		// 	return (i)*conf.row_height + conf.hit_offset+conf.hit_legend_bottom;
-		// })
-		// .text(function(d){return d.hit_pos.target.len});
-		// // query seq length
-		// hits.append("text")
-		// .attr("class", "hit_legend")
-		// .attr("x", function(d,i) { return axisScale(d.hit_pos.query.len)+2; })
-		// .attr('y', function(d,i, j){
-		// 	return (i)*conf.row_height + conf.hit_offset+conf.hit_legend_top;
-		// })
-		// .text(function(d){return d.hit_pos.query.len});
-		//
-		//
-		// //evalue
-		// hits.append("text")
-		// .attr("class", "hit_legend")
-		// .attr("x", function(d,i) { return axisScale(conf.longest_hit)+conf.hit_legend_bottom; })
-		// .attr('y', function(d,i, j){
-		// 	return (i)*conf.row_height + conf.hit_offset+conf.hit_legend_top;
-		// })
-		// .text(function(d){return d.evalue});
-		//
-		//
-		//
-		//
-		//
-		//
-		//
-		// // plot the hits
-		// query_seq_matches.append("rect")
-		// .attr("height", conf.hit_height)
-		// // y.rangeBand())
-		// .attr('ry', 2)
-		// .attr('rx', 2)
-		// .attr("x", function(d) { return axisScale(d.from) })
-		// .attr('y', function(d,i, j){ return (j)*conf.row_height + conf.hit_offset })
-		// .attr("width", function(d) { return axisScale(d.to - d.from)  })
-		// .style("fill", function(d) { return color(d.count) });
-		//
-		//
-		//
-		//
-		// target_matches.append('path')
-		// .attr('d', function(d,i){ return draw_domain(axisScale(d.jenv-d.ienv), 10) })
-		// .attr('stroke', '#000')
-		// .attr('fill', 'rgba(0,0,0,0)')
-		// .attr('stroke-dasharray', '5,5')
-		// .attr("transform", function(d,i,j){
-		// 	var x_coord = axisScale(d.ienv);
-		// 	var y_coord = (j)*conf.row_height + conf.hit_offset + 10;
-		// 	// x_coord = 20;
-		// 	return "translate("+x_coord+","+y_coord+")"	;
-		// })
-
-
-
-		// target_matches.append('path')
-		// .attr('d', function(d,i){
-		// 	var line_path = "L0,0"+
-		// 	return draw_domain(axisScale(d.jenv-d.ienv), 15);
-		// })
-		// .attr('stroke', '#000')
-		// .attr('fill', 'rgba(0,0,0,0)')
-		// .attr('stroke-dasharray', '5,5')
-		// // .attr('fill', function(d){
-		// // 	return "url(#domain_gradient)"
-		// // })
-		// .attr("transform", function(d,i,j){
-		// 	var x_coord = axisScale(d.ienv);
-		// 	var y_coord = (j)*conf.row_height + conf.hit_offset + 10;
-		// 	// x_coord = 20;
-		// 	return "translate("+x_coord+","+y_coord+")"	;
-		// })
-
-
-		// // plot the hits pfam domains
-		// target_matches.append("rect")
-		// .attr("height", conf.hit_height)
-		// // y.rangeBand())
-		// .attr('ry', 2)
-		// .attr('rx', 2)
-		// .attr("x", function(d) {
-		// 	var x_coord = Math.floor((conf.longest_hit - d.len) / 2)
-		// 	return axisScale(x_coord + d.from); })
-		// 	.attr('y', function(d,i, j){
-		// 		var res = (j)*conf.row_height + conf.hit_offset;
-		// 		console.log("hit "+j+": "+(j+1)*conf.row_height+" offset: "+conf.hit_offset+" total: "+res);
-		// 		return (j)*conf.row_height + conf.hit_offset + 14; })
-		// 		.attr("width", function(d) { return axisScale(d.to - d.from); })
-		// 		.style("fill", function(d) { return color(d.count);
-		// 		});
-
-
-
-		// plot domains for query sequence
-		// plot query sequence seperatetly
-
-		// bars.append("text")
-		// .attr("x", function(d) { return -20; })
-		// .attr("y", function(d, i, j){ return (j+1)*20})
-		// .attr("dy", "0.5em")
-		// .attr("dx", "0.5em")
-		// .style("font" ,"10px sans-serif")
-		// .style("text-anchor", "begin")
-		// .text(function(d, i, j) { return "Hit "+j });
+				.attr('ry', 0)
+				.attr('rx', 0)
+				.attr('stroke','none')
+				.attr('opacity',1)
+				.attr('fill-opacity',1)
+				.style("fill", function(d) {
+					// var test= d.count;
+					return d.query_color });
+					
+			target_matches.append('rect')
+			.attr("width", function(d) { return axisScale(d.alihmmto-d.alihmmfrom); })
+			.attr("height", 4.5)
+			.attr("x",function(d){return axisScale(d.alihmmfrom)})
+			.attr("y",-4)
+			.attr('r', 0)
+					.attr('ry', 0)
+					.attr('rx', 0)
+					.attr('stroke','none')
+					.attr('opacity',1)
+					.attr('fill-opacity',1)
+					.style("fill", function(d) {
+						// var test= d.count;
+						return d.query_color }); 			
+// 		// y.rangeBand())
+// 		.attr("class", "hit_match")
+// 		.attr("x", function(d){ return  axisScale(d.ienv)})
+// 		// .attr('y', function(d,i, j){ return (i)*conf.row_height + conf.hit_offset + 15; })
+// 		.attr("width", function(d) { return axisScale(d.jenv-d.ienv); })
+// 		.attr("height", 4.5)
+// 		.attr('r', 0)
+// 		.attr('ry', 0)
+// 		.attr('rx', 0)
+// 		.attr('stroke','none')
+// 		.attr('opacity',1)
+// 		.attr('fill-opacity',1)
+// 		.style("fill", function(d) {
+// 			var test= d.count;
+// 			return color[d.count] });
 		d3.selectAll(".axis path")
 		.style("fill", "none")
 		.style("stroke", "#000")
@@ -642,6 +490,32 @@ function set_colors(svg){
 
 }
 
+
+function draw_domain_hit (d,axisScale){
+  var offset = 5.5;
+
+
+  // var start = "M"+axisScale(d.alihmmfrom)+",0"
+  // var start_end = "L"+axisScale(d.alihmmto)+",0";
+  // var down_end = "L"+axisScale(d.jenv)+","+2*offset;
+  // var down_start = "L"+axisScale(d.ienv)+","+2*offset;
+  // var up_start = "L"+axisScale(d.alihmmfrom)+",0";
+
+
+  var start = "M"+axisScale(d.alihmmfrom)+",0"
+  var start_end = "M"+axisScale(d.alihmmto)+",0";
+  var down_end = "L"+axisScale(d.jenv)+","+2*offset;
+  var down_start = "M"+axisScale(d.ienv)+","+2*offset;
+  var up_start = "L"+axisScale(d.alihmmfrom)+",0";
+
+
+
+  var full_path = start+""+start_end+""+down_end+""+down_start+""+up_start;
+  // var path = "M"+i*1",
+
+  return full_path;
+
+}
 
 function draw_domain (length, height, type){
 

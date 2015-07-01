@@ -83,7 +83,7 @@ hmmer_vis.pdb_viewer = function() {
 	     	   //viewer.centerOn(structure);
 			   viewer.autoZoom()
 			   var html_text = "Pdb structure of the best hit was <a href='http://www.ebi.ac.uk/pdbe/entry/pdb/"+pdb_entry+"'>"+pdb_entry+"</a> (chain: "+chain_id+").";
-			   html_text += (not_selected_chains.length)? "<br>The other "+not_selected_chains.length+" chains ("+not_selected_chains.sort()+") are greyed out. " : "<br>The protein has no other chains. ";
+			   html_text += (not_selected_chains.length)? "<br>The other "+not_selected_chains.length+" chain(s) ("+not_selected_chains.sort()+") are greyed out. " : "<br>The protein has no other chains. ";
 			   html_text += "The matching region on chain "+chain_id+" is highlighted in red.";
 			   d3.select("#pdb_text").html(html_text);
 			   
