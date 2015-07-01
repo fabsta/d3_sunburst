@@ -28,8 +28,8 @@ hmmer_vis.hits_view = function() {
 		// global svg settings
 		'div_width' : 400
 	};
-	 var color = d3.scale.category10();
-	 // var color = ['#990000','#f9ea6d','#009900','#000099'];
+	 // var color = d3.scale.category10();
+	 var color = ['#990000','#f9ea6d','#009900','#000099','#aaaaaa'];
 
 
 
@@ -51,17 +51,24 @@ hmmer_vis.hits_view = function() {
 				//ok, if query overlaps with existing one --> no new color
 				for (var uh in hits_colors) {
 					var curr_from = current_domain.alihmmfrom, dict_to = hits_colors[uh]['to'], curr_to = current_domain.alihmmto, dict_from = hits_colors[uh]['from'];
-					if(curr_from < dict_from && curr_to > dict_from){
-						//overlap: no new color
-						overlap_detected=1;
+					// hit overlaps completely
+					if(curr_from <= dict_from){
+						if(curr_to >= dict_from){
+							overlap_detected=1;
+						}
+					}
+					else{
+						if(curr_from <= dict_to){
+							overlap_detected=1;
+						}
 					}
 				}
 				if(overlap_detected){
-					current_domain.query_color = color(unique_hit);
+					current_domain.query_color = color[unique_hit];
 				}
 				else{
 					// add new color for unique hit
-					current_domain.query_color = color(++unique_hit);
+					current_domain.query_color = color[unique_hit++];
 					var coordinates = {'from':current_domain.alihmmfrom, 'to': current_domain.alihmmto, 'color': current_domain.query_color};
 					hits_colors[unique_hit] = coordinates; 				
 				}
@@ -276,7 +283,7 @@ hmmer_vis.hits_view = function() {
 		.attr("width", function(d) { return axisScale(d.jenv-d.ienv); })
 		.attr("height", 4.5)
 		.attr("x",function(d){return axisScale(d.ienv)})
-		.attr("y",10)
+		.attr("y",11)
 		.attr('r', 0)
 				.attr('ry', 0)
 				.attr('rx', 0)
