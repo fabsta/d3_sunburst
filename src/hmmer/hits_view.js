@@ -30,15 +30,15 @@ hmmer_vis.hits_view = function() {
 	};
 	 // var color = d3.scale.category10();
 	 var color = ['#990000','#f9ea6d','#009900','#000099','#aaaaaa'];
-
+	 var add_header, best_pdb_hit;
 
 
 
 	// The cbak returned
-	var hits_view = function(div, data) {
+	var hits_view = function(div, found_hits,add_header,best_pdb_hit) {
 		// to plot the colors correctly, we need to add a value to d.domains
-		for (var index = 0; index < data.found_hits.length; ++index) {
-			var current_hit = data.found_hits[index]
+		for (var index = 0; index < found_hits.length; ++index) {
+			var current_hit = found_hits[index]
 			var ndom = current_hit.ndom;
 			var hits_colors = {};
 			var unique_hit = 0;
@@ -46,7 +46,6 @@ hmmer_vis.hits_view = function() {
 				var current_domain = current_hit.domains[domain_index]
 				current_domain.count = ndom-1;
 				var changed = 0,overlap_detected=0;
-				
 				// set the colors
 				//ok, if query overlaps with existing one --> no new color
 				for (var uh in hits_colors) {
@@ -75,17 +74,19 @@ hmmer_vis.hits_view = function() {
 			}			
 		}
 		// number of hits
-		conf.all_hits = data.found_hits;
+		conf.all_hits = found_hits;
 		conf.no_hits = conf.all_hits ? conf.all_hits.length : 1;
 		conf.height = conf.no_hits * conf.row_height;
 
 		// determine longest hit
-		conf.longest_hit = d3.max(data.found_hits, function(d,i) { return i>conf.no_hits ? 0:d.hit_pos.target.len; });
-		conf.query_length = d3.max(data.found_hits, function(d,i) { return i>conf.no_hits ? 0:d.hit_pos.query.len; });
+		conf.longest_hit = d3.max(found_hits, function(d,i) { return i>conf.no_hits ? 0:d.hit_pos.target.len; });
+		conf.query_length = d3.max(found_hits, function(d,i) { return i>conf.no_hits ? 0:d.hit_pos.query.len; });
 		conf.width = conf.longest_hit > conf.query_length ? conf.longest_hit : conf.query_length;
 
 		console.log("longest seq is "+conf.width);
 		axisScale = d3.scale.linear().domain([0, conf.width]).range([0, conf.div_width]);
+		
+		if(add_header){
 		var ul = d3.select(div).append("ul").attr("class", "top_hits");
 
 		// put the scale into an empty div
@@ -111,7 +112,7 @@ hmmer_vis.hits_view = function() {
 		.call(d3.svg.axis()
         .scale(axisScale)
         .orient("top"));
-
+		}
 
 		var hits_ul = d3.select(div).append("ul").attr("class", "top_hits");
 
@@ -121,16 +122,45 @@ hmmer_vis.hits_view = function() {
         .append("li")
 				.append('div').attr('class', 'container-fluid')
 				.append('div').attr('class', 'row');
-
-
-
+				
 // define the three columns
 		var left_blocks = li.append('div').attr('class', 'col-xs-4 col-md-2 col-lg-2 hit_info');
 
+		var left_block_svg = left_blocks.append('div').append('svg')
+		.attr('height', function(d){
+			return d.hasOwnProperty("is_best_pdb_hit") ? 15 : 0;
+		}).attr('width',30).append('g')
+		// .attr("transform","translate(3,20)")
+		
+		left_block_svg.append("rect")
+	// y.rangeBand())
+		.attr("class", "pdb_bar")
+		.attr("x", 0)
+		// .attr('y', function(d,i, j){ return (best_pdb_hit)*conf.row_height + conf.hit_offset + 15; })
+		.attr("width", 30)
+		.attr("height", 15)
+		.attr('r', 0)
+		.attr('ry', 0)
+		.attr('rx', 0)
+		.style('fill', 'red')
+		.style('fill-opacity', 0.4)
+        .attr('stroke', 'black')		
+		
+		// append pdb text
+		left_block_svg.append("text")
+		.attr("class", "hit_description small")
+		 .attr('y', 10)
+		.attr('x',5)
+		.text("PDB");
+
+		left_blocks.append("span")
+		.attr("class", "species_info").html(function(d,i){ 
+			return "<b>"+(i+1)+".</b>"; 
+		});
+		
 		// left_blocks.append("span")
 		// .attr("class", "hit_count").html(function(d,i){ return "Hit: "+parseInt(i+1); });
 		left_blocks
-		// .append("div").html(function(d,i){return i;})
 		.append("div")
 		.attr("class",function(d){
 			return "hit_list "+d.kg;
@@ -144,6 +174,7 @@ hmmer_vis.hits_view = function() {
 			return "<b>"+d.name+"</b>"; 
 		});
 		
+
 		
 
 		//left_blocks.append("span")
@@ -194,7 +225,7 @@ hmmer_vis.hits_view = function() {
 		.attr('opacity',1)
 		.attr('fill-opacity',1)
 		.style("fill", function(d) { return "url(#line_gradient)"; })
-
+		
 
 		// add length
 		// query_seq_matches_svg.append("text")

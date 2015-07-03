@@ -131,13 +131,15 @@ fill: #fff;
 }
 
 
-
-.top_hits .hit_info {
-  padding-top: 18px;
+.species_info {
+	font-size: 8px;
+}
+.top_hits .hit_list {
+/*  padding-top: 18px;*/
   font-size: 8px;
 }
 
-.top_hits .hit_info span {
+.top_hits .hit_list span {
   display: block;
   text-align: left;
 }

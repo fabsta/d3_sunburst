@@ -47,7 +47,7 @@ hmmer_vis.pdb_viewer = function() {
 		 
 		 
 	 // PDB id is http://www.ebi.ac.uk/pdbe/api/pdb/entry/residue_listing/:pdbid/chain/:chainid	 
-	    var pdb_url = "http://www.ebi.ac.uk/pdbe/entry-files/download/pdb"+pdb_entry+".ent"
+	    // var pdb_url = "http://www.ebi.ac.uk/pdbe/entry-files/download/pdb"+pdb_entry+".ent"
 	   //var pdb_url = "http://www.ebi.ac.uk/pdbe/entry-files/download/pdb117e.ent"
 	   	var pdb_url = "http://www.ebi.ac.uk/pdbe/entry-files/download/pdb"+pdb_entry+".ent"
 		var not_selected_chains = [];

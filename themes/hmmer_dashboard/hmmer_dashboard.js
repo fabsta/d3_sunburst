@@ -51,8 +51,8 @@ var hmmer_theme_hmmer_dashboard = function() {
 		    xhr.send();
 		  };
 
-		   getJSON(hmmer_top_hits_url, function(data) {
-		//	  getJSON("../../data/stats.json", function(data) {
+		  getJSON(hmmer_top_hits_url, function(data) {
+			  // getJSON("../../data/good_examples/example.json", function(data) {
 		  
 		  	  // set curr hits
 			  d3.selectAll("#total_curr_hits").text(data.stats.nincluded>1000?1000:data.stats.nincluded);
@@ -63,9 +63,10 @@ var hmmer_theme_hmmer_dashboard = function() {
 			  
 			  http://www.ebi.ac.uk/pdbe/entry/pdb/1jcn
 			  
-	        d3.select("#top_hits_spinner").remove();
-	        hmmer_hits_viewer(document.getElementById("hits_viewer"), data);
-
+	        if (typeof data.found_hits !== 'undefined'){
+				d3.select("#top_hits_spinner").remove();
+				hmmer_hits_viewer(document.getElementById("hits_viewer"), data.found_hits,1,data.best_pdb_hit);
+			}
 	        // if (typeof data.distTree !== 'undefined'){
 	        //   console.log("Found distTree entry: ");
 	        //   hmmer_sunburst(document.getElementById("chart"), JSON.parse(data.distTree), "dist_tree")
@@ -81,8 +82,8 @@ var hmmer_theme_hmmer_dashboard = function() {
 			// Tree
 	        if (typeof data.fullTree !== 'undefined'){
 	          console.log("Found fullTree entry: ");
-	          hmmer_sunburst(document.getElementById("chart"), JSON.parse(data.fullTree), "full_tree")
-	          // hmmer_sunburst(document.getElementById("chart"), JSON.parse(data.distTree), "dist_tree")
+	          // hmmer_sunburst(document.getElementById("chart"), JSON.parse(data.fullTree),"full_tree", data.found_hits)
+	          hmmer_sunburst(document.getElementById("chart"), JSON.parse(data.distTree), "dist_tree",data.found_hits)
 	          d3.select("#taxonomy_view_spinner").remove();
 	        }
 			// PDB
@@ -90,14 +91,22 @@ var hmmer_theme_hmmer_dashboard = function() {
 				var pdb_hits = data.pdb.hits
 				var best_hit = pdb_hits[0]
 				var pdb_positions = data.pdb.pos.domains.map(function(domain){return [domain.iali,domain.jali]})
-	          console.log("Found pdb entry: "+best_hit);
-	          d3.select("#pdb_spinner").remove();
+	            console.log("Found pdb entry: "+best_hit);
+				d3.select("#pdb_spinner").remove();
  	 		 	var pdb_entry,chain_id;
- 	 		 (function(arr){ pdb_entry=arr[0]; chain_id=arr[1]; })(best_hit.split("_"));
- 			  
-	          
-			  hmmer_pdb_viewer(document.getElementById("pdb_div"), best_hit, pdb_positions,data.pdb.mapping);
+ 	 		 	(function(arr){ pdb_entry=arr[0]; chain_id=arr[1]; })(best_hit.split("_"));
+		        if (typeof data.pdb.best_hit !== 'undefined'){
+				//can we also show the match
+					hmmer_hits_viewer(document.getElementById("pdb_match_div"), [data.pdb.best_hit],0,'');
+				}
+				hmmer_pdb_viewer(document.getElementById("pdb_div"), best_hit, pdb_positions,data.pdb.mapping);
+				
+		       
 	        }
+			else{
+				d3.select("#pdb_spinner").remove();
+				d3.select("#pdb_text").html("There was no pdb hit in your search result");
+			}
 		  }, function(status) {
 		    alert('Something went wrong.');
 		  });
