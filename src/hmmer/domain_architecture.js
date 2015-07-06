@@ -28,7 +28,7 @@ hmmer_vis.domain_architectures_view = function() {
 
 
 	// The cbak returned
-	var domain_architectures_view = function(div, data) {
+	var domain_architectures_view = function(div, data,query_architecture_id) {
 
 		// number of hits
 		conf.all_hits = data;
@@ -49,10 +49,14 @@ hmmer_vis.domain_architectures_view = function() {
 
 		var ul = d3.select(div).append("ul").attr("class", "domains");
 		
-		var li = ul.selectAll("li")
+		var li = ul.selectAll("li").attr('class','dom_arch_hit')
 		.data(conf.all_hits)
 		.enter()
 		.append("li")
+		// label exact match
+		.attr('class', function(d){
+									return (query_architecture_id == d.archindex) ? 'exact' : ''
+								})
 		
 		var li_link = li.append('a').attr('class', 'left archshow');
 		var li_link_span = li_link.append("span").attr('class', 'block')
@@ -66,8 +70,8 @@ hmmer_vis.domain_architectures_view = function() {
 		// var li_right = li.append('p').attr('class', 'right');
 
 		var li_text = li.append('p').html(function(d){
-			
-		return 'with domain architecture: <strong>'+d.arch+'</strong>, <i>example:</i><a class="ext" href="http://www.uniprot.org/uniprot/F7FU48_MONDO">F7FU48_MONDO</a>'
+			// return 'with domain architecture: <strong>'+d.arch+'</strong>, <i>example:</i><a class="ext" href="http://www.uniprot.org/uniprot/F7FU48_MONDO">F7FU48_MONDO</a>'
+			return '<strong>'+d.arch+'</strong>, <i>example:</i><a class="ext" href="http://www.uniprot.org/uniprot/F7FU48_MONDO">F7FU48_MONDO</a>'
 		});
 		var dom_arch_ids  = new Array();
 		var dom_data = new Array();

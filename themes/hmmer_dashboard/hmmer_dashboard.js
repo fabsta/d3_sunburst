@@ -77,7 +77,7 @@ var hmmer_theme_hmmer_dashboard = function() {
 	        // domain architecture
 	        if(typeof data.dom_architectures !== 'undefined'){
 	          console.log("Found dom_architectures entry: ");
-	          hmmer_domain_architectures_view(document.getElementById("domain_architectures_view"), data.dom_architectures);
+	          hmmer_domain_architectures_view(document.getElementById("domain_architectures_view"), data.dom_architectures,query_architecture_id);
 	          d3.select("#domain_architecture_spinner").remove();
 	        }
 			// Tree

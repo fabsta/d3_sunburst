@@ -208,7 +208,8 @@ hmmer_vis.hits_view = function() {
 				right_block_domain.append("rect")
 			// y.rangeBand())
 				.attr("class", "dom_arch_bar")
-				.attr("x", 0)
+				.attr("x", 15)
+				// .attr("y", 10)
 				// .attr('y', function(d,i, j){ return (best_pdb_hit)*conf.row_height + conf.hit_offset + 15; })
 				.attr("width", 45)
 				.attr("height", 15)
@@ -220,7 +221,7 @@ hmmer_vis.hits_view = function() {
 				right_block_domain.append("text")
 				.attr("class", "hit_description small")
 				 .attr('y', 10)
-				.attr('x',5)
+				.attr('x',20)
 				.text("SAME DA");
 				
 
@@ -310,7 +311,7 @@ hmmer_vis.hits_view = function() {
 		target_area.append("text")
 		.attr("class", "hit_description small")
 		// .attr("x", function(d,i) { return axisScale(d.hit_pos.target.len)+2; })
-		 .attr('y', 20)
+		 .attr('y', 22)
 		// function(d,i, j){
 		// 	return (i)*conf.row_height + conf.hit_offset+conf.hit_legend_bottom;
 		// })
