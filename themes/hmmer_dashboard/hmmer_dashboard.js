@@ -61,11 +61,12 @@ var hmmer_theme_hmmer_dashboard = function() {
 			  document.getElementById("uuid_link_domain").href=results_url+"/"+uuid+"/domain"; 
 			  document.getElementById("uuid_link_taxonomy").href=results_url+"/"+uuid+"/taxonomy"; 
 			  
-			  http://www.ebi.ac.uk/pdbe/entry/pdb/1jcn
+			  var query_architecture_id = data.query_arch_id;
+			  // http://www.ebi.ac.uk/pdbe/entry/pdb/1jcn
 			  
 	        if (typeof data.found_hits !== 'undefined'){
 				d3.select("#top_hits_spinner").remove();
-				hmmer_hits_viewer(document.getElementById("hits_viewer"), data.found_hits,1,data.best_pdb_hit);
+				hmmer_hits_viewer(document.getElementById("hits_viewer"), data.found_hits,1,data.best_pdb_hit,query_architecture_id);
 			}
 	        // if (typeof data.distTree !== 'undefined'){
 	        //   console.log("Found distTree entry: ");
@@ -99,7 +100,7 @@ var hmmer_theme_hmmer_dashboard = function() {
 				//can we also show the match
 					hmmer_hits_viewer(document.getElementById("pdb_match_div"), [data.pdb.best_hit],0,'');
 				}
-				hmmer_pdb_viewer(document.getElementById("pdb_div"), best_hit, pdb_positions,data.pdb.mapping);
+				hmmer_pdb_viewer(document.getElementById("pdb_div"), best_hit, pdb_positions,data.pdb.mapping,query_architecture_id);
 				
 		       
 	        }
