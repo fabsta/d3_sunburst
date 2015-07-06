@@ -135,7 +135,7 @@ fill: #fff;
 	font-size: 8px;
 }
 .top_hits .hit_list {
-/*  padding-top: 18px;*/
+  padding-top: 18px;
   font-size: 8px;
 }
 
@@ -144,6 +144,9 @@ fill: #fff;
   text-align: left;
 }
 
+.top_hits .hit_info{
+	font-size: 8px;
+}
 
 .top_hits .hit_info .gene_name{
 	font-size: 9px;
@@ -189,6 +192,10 @@ fill: #fff;
   text-align: left;
 }
 
+
+.table_hit {
+	border: 1px solid #999;
+}
 .top_hits .block {
   margin: .3em 1em 0 0;
   color: #666;
