@@ -265,27 +265,27 @@ hmmer_vis.sunburst2 = function() {
 			.attr("class","sunburst_model_organism")
 			.attr("height", 20);
 
-		var best_hits = curr.enter_selection.append("text")
-	   			.text(function(d,i){
-				if(!d.children && d.short in best_hits_lookup){
-					var test = best_hits_lookup[d.short].join()
-					return best_hits_lookup[d.short].join();
-				}
-			})
-			// .attr("transform", function(d) {
-// 					var c = conf.arc.centroid(d);
-// 					// console.log("c0: "+c[0]+" "+c[1]+" "+c[2]+" "+c[3]);
-// 					return "translate(" + c[0]*1.1 +"," + c[1]*1.1 + ")";
+		// var best_hits = curr.enter_selection.append("text")
+// 	   			.text(function(d,i){
+// 				if(!d.children && d.short in best_hits_lookup){
+// 					var test = best_hits_lookup[d.short].join()
+// 					return best_hits_lookup[d.short].join();
+// 				}
 // 			})
-			.attr('x',function(d){
-				var c = conf.arc.centroid(d);
-				return c[0]*1.1;
-			})
-			.attr('y',function(d){
-				var c = conf.arc.centroid(d);
-				return c[1]*1.1;
-			})
-			.attr("class","sunburst_best_hit")
+// 			// .attr("transform", function(d) {
+// // 					var c = conf.arc.centroid(d);
+// // 					// console.log("c0: "+c[0]+" "+c[1]+" "+c[2]+" "+c[3]);
+// // 					return "translate(" + c[0]*1.1 +"," + c[1]*1.1 + ")";
+// // 			})
+// 			.attr('x',function(d){
+// 				var c = conf.arc.centroid(d);
+// 				return c[0]*1.1;
+// 			})
+// 			.attr('y',function(d){
+// 				var c = conf.arc.centroid(d);
+// 				return c[1]*1.1;
+// 			})
+// 			.attr("class","sunburst_best_hit")
 
 
 
