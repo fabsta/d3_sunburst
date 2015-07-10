@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <link rel="stylesheet" type="text/css" href="../../css/hmmer_vis.css"/>
+  <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css" rel="stylesheet"> -->
+
+</head>
+<body>
+	<div id="viewer"> 
+  <div id="main">
+	  <h4>Top x PDB matches</h4>
+      <div class="container">
+        <div class="row clearfix">
+          <div class="col-md-12 column">
+            <div class="row clearfix">
+                <h4>PDB hit</h4>
+               <p id="pdb_text"></p>
+			   <div id="pdb_div"></div>
+			   
+                <div id="pdb_spinner" style="visibility:hidden">
+                  Loading top hit.. <img src="http://www.ebi.ac.uk/Tools/hmmer//static/images/loading.gif" alt="Searching seq">
+                </div>
+              
+          </div>
+        </div>
+        <div class="col-md-12 column">
+          <div class="row clearfix">
+                <h4>PDB hits table</h4>
+				<div id="pdb_match_div"></div>
+				<div id="pdb_update_text"></div>
+				<div id="pdb_hits_table"> </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+    <script src="../../js/d3.v3.min.js"></script>
+
+    <script src="../../js/nv.d3.min.js"></script>
+    <script src="../../js/d3.layout.cloud.js"></script> -->
+</body>
+    <script src="../../lib/hmmer_vendor.min.js"></script>
+    <script src="pdb_tab.js"></script>
+    <script src="../../lib/hmmer_vis.min.js"></script>
+	<!-- <script  src='../../js/pv.min.js'></script> -->
+
+    <script>
+    (function() {
+
+      var theme = pdb_theme_hmmer_dashboard();
+        // theme(document.getElementById("chart"),"9F2459AA-20CC-11E5-9E53-3C891AB9B3C4");
+        theme(document.getElementById("chart"),"44B81E8A-247C-11E5-B0E0-00A11AB9B3C4");
+	  // very complex
+	   // theme(document.getElementById("chart"),"D0B044CE-1F24-11E5-9451-2F7FD26C98AD");
+	  // BRCA2 -> pdb
+	    // theme(document.getElementById("chart"),"FFAF041C-20F6-11E5-8490-1BBAD26C98AD");
+	  // theme(document.getElementById("chart"),"C9561A36-20F6-11E5-B7E5-CDB9D26C98AD");
+	    // theme(document.getElementById("chart"),"981A647C-1FED-11E5-9160-DB71F69F8818");
+	    // theme(document.getElementById("chart"),"10772428-23E0-11E5-80EC-CCDBD26C98AD");
+	  //hmmsearch
+		// theme(document.getElementById("chart"),"EC731A3C-1FCF-11E5-A7FD-1E7C1AB9B3C4");
+    }());
+    </script>
+
+
+
+
+

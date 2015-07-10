@@ -164,7 +164,6 @@ hmmer_vis.hits_view = function() {
 				  					 return "<b>"+d.name+"</b>";
 				 // 					 // return "<b>"+(i+1)+". "+d.name+"</b>";
 				  })
-
 		//model orga
 		second_row.append('td')
 			    .append('svg').attr('height', 15).attr('width',15)
@@ -264,43 +263,15 @@ hmmer_vis.hits_view = function() {
 
 				rigth_blocks_div.append("span")
 				.attr("class", "score_info").html(function(d){ return "<i>"+d.score+"</i>"; });
-	//
-	//
-	// 	//add exact domain architecture
-	// 			var right_block_domain = rigth_blocks_div.append('span').append('svg')
-	// 			.attr('height', function(d){
-	// 				return d.archindex == query_architecture_id ? 15 : 0;
-	// 			}).attr('width',60).append('g')
-	// 			// .attr("transform","translate(3,20)")
-	//
-	// 			right_block_domain.append("rect")
-	// 		// y.rangeBand())
-	// 			.attr("class", "dom_arch_bar")
-	// 			.attr("x", 15)
-	// 			// .attr("y", 10)
-	// 			// .attr('y', function(d,i, j){ return (best_pdb_hit)*conf.row_height + conf.hit_offset + 15; })
-	// 			.attr("width", 45)
-	// 			.attr("height", 15)
-	// 			.style('fill', 'red')
-	// 			.style('fill-opacity', 0.4)
-	// 	        .attr('stroke', 'black')
-	//
-	// 			// append pdb text
-	// 			right_block_domain.append("text")
-	// 			.attr("class", "hit_description small")
-	// 			 .attr('y', 10)
-	// 			.attr('x',20)
-	// 			.text("SAME DA");
-	//
 
+
+
+		// middle svg
 		var middle_svg = middle_div.append("div").attr('class','middle_div')
 				.append('svg')
 				.attr('height', 40).attr('width',conf.div_width-10).append('g').attr("transform", "translate(0,5)");
 
 				
-			
-
-
 		// the domains
 		var query_seq_matches_svg = middle_svg
 		.append("g")
@@ -321,35 +292,6 @@ hmmer_vis.hits_view = function() {
 		.attr('fill-opacity',1)
 		.style("fill", function(d) { return "url(#line_gradient)"; })
 		
-
-		// add length
-		// query_seq_matches_svg.append("text")
-// 		.attr("class", "hit_legend")
-// 		.attr("x", function(d,i) { return axisScale(d.hit_pos.target.len)+2; })
-// 		// .attr('y', function(d,i, j){
-// 		// 	return (i)*conf.row_height + conf.hit_offset+conf.hit_legend_bottom;
-// 		// })
-//.text(function(d){return d.hit_pos.target.len});
-
-
-		// bind the domains
-		// var query_seq_matches = query_seq_matches_svg.selectAll("g")
-// 		.data(function(d) { return d.hit_pos.query.hits; })
-// 		.enter();
-// 		// // plot the hits
-// 		query_seq_matches.append("rect")
-// 		.attr("height", conf.hit_height)
-// 		// y.rangeBand())
-// 		.attr('ry', 2)
-// 		.attr('rx', 2)
-// 		.attr("x", function(d) { return axisScale(d.from) })
-// 		// .attr('y', function(d,i, j){ return (j)*conf.row_height + conf.hit_offset })
-// 		.attr("width", function(d) { return axisScale(d.to - d.from)  })
-// 		.style("fill", function(d) { return color[d.count] });
-
-
-
-
 
 
 		// the target seq

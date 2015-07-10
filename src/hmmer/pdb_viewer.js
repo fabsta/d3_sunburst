@@ -2,103 +2,81 @@
 hmmer_vis.pdb_viewer = function() {
 	"use strict";
 	var chart;
-
+ var show_pdb_entry = 1;							
+ var options = {
+   width: 400,
+   height: 400,
+   antialias: true,
+   quality : 'medium'
+ };
+ var curr = {
+	 'chain': undefined,
+	 'pdb_id': undefined,
+	 'div' : undefined,
+ }
 	// The cbak returned
-	var pdb_viewer = function(div, pdb_id, hit_positions, mapping) {
-   	 // var viewer = pv.Viewer(div_id,
-   	 //                               { quality : 'medium', width: 'auto', height : 'auto',
-   	 //                                 antialias : true, outline : true});
-	 var show_pdb_entry = 0;							
-	 var options = {
-	   width: 400,
-	   height: 400,
-	   antialias: true,
-	   quality : 'medium'
-	 };
-	 
-	 // insert the viewer under the Dom element with id 'gl'.
-	 var viewer = pv.Viewer(div, options);
-	 var width = d3.select("#pdb_div").style("width") 
-	 var height = d3.select("#pdb_div").style("height") 
-	 
-	 
-	 // can we map?
-	 if(typeof mapping.uniprot !== 'undefined'){
-		 if(typeof mapping.uniprot.start !== 'undefined' && typeof mapping.uniprot.end !== 'undefined'){
-			 if(mapping.uniprot.start > hit_positions[1] || mapping.uniprot.end  < hit_positions[0]){
-				 console.log("unfortunately, there is no overlap");
-				 show_pdb_entry = 0; 
-				 div.innerHTML = "Sorry no pdb with overlapping matching region found.";
-			 }
-			 else{
-			 	show_pdb_entry = 1; 
-			 }
-		 }
-	 }	 
-	 // function loadMethylTransferase() {
-	   // asynchronously load the PDB file for the dengue methyl transferase
-	   // from the server and display it in the viewer.
-		 if(show_pdb_entry){	
-		 var pdb_entry,chain_id;
-		 (function(arr){
-		   pdb_entry=arr[0]; 
-		   chain_id=arr[1];
-		 })(pdb_id.split("_"));
-		 
-		 
-	 // PDB id is http://www.ebi.ac.uk/pdbe/api/pdb/entry/residue_listing/:pdbid/chain/:chainid	 
-	    // var pdb_url = "http://www.ebi.ac.uk/pdbe/entry-files/download/pdb"+pdb_entry+".ent"
-	   //var pdb_url = "http://www.ebi.ac.uk/pdbe/entry-files/download/pdb117e.ent"
-	   	var pdb_url = "http://www.ebi.ac.uk/pdbe/entry-files/download/pdb"+pdb_entry+".ent"
-		var not_selected_chains = [];
-		
-	   console.log("would get to fetch data from: "+pdb_url);
-	   pv.io.fetchPdb(pdb_url, function(structure) {
-	   // pv.io.fetchPdb('../../data/1fup.pdb', function(structure) {
-				// var structure = pv.io.pdb(data);
-				var chains = structure.chains().map(function(d){
-					var chain = d['_H'];
-					var current_chain = structure.select({chain: chain});
-					if(chain_id == chain){
-						var current_viewer = viewer.cartoon('current_chain', current_chain);
-						// var selected = structure.select({rnumRange : [1001,1286]});
-						hit_positions.map(function(range){
-							// var selected = structure.select({rnumRange : range});
-							var selected = structure.select({rnumRange : [1-20]});
-							current_viewer.colorBy(color.uniform('red'), selected);
-						})
-					}
-					else{
-						not_selected_chains.push(chain);
-						viewer.cartoon('other_chain', current_chain);
-						viewer.cartoon('other_chain', current_chain);
-						viewer.forEach(function(object) {
-							if(object['_H'] == 'other_chain'){
-								object.setOpacity(0.4);
-							}
-						});
-					}
-					return d['_H'];
-				})
-	     	   //viewer.centerOn(structure);
-			   viewer.autoZoom()
-			   var html_text = "Pdb structure of the best hit was <a href='http://www.ebi.ac.uk/pdbe/entry/pdb/"+pdb_entry+"'>"+pdb_entry+"</a> (chain: "+chain_id+").";
-			   html_text += (not_selected_chains.length)? "<br>The other "+not_selected_chains.length+" chain(s) ("+not_selected_chains.sort()+") are greyed out. " : "<br>The protein has no other chains. ";
-			   html_text += "The matching region on chain "+chain_id+" is highlighted in red.";
-			   d3.select("#pdb_text").html(html_text);
-			   
-	   });
-	 }
-
-	 // load the methyl transferase once the DOM has finished loading. That's
-	 // the earliest point the WebGL context is available.
-	 // document.addEventListener('DOMContentLoaded',
-	 // loadMethylTransferase
- 	// );
-	 
+	var pdb_viewer = function(div, pdb_id, chain,hit_positions) {
+		 // insert the viewer under the Dom element with id 'gl'.
+		 curr.viewer = pv.Viewer(div, options);
+		 curr.width = d3.select("#pdb_div").style("width") 
+		 curr.height = d3.select("#pdb_div").style("height") 
+		 curr.chain = chain;
+	 	curr.pdb_id = pdb_id;
+		curr.div = div;	
+	 // if(!show_pdb_entry){
+		 // 		 div.innerHTML = "Sorry no pdb with overlapping matching region found.";
+		 // 	 }
+	 pdb_viewer.redraw(hit_positions);
 		
 		return chart;
 	};
+	
+	
+    pdb_viewer.redraw = function(hit_positions) {
+		var pdb_entry = curr.pdb_id;
+	   	var pdb_url = "http://www.ebi.ac.uk/pdbe/entry-files/download/pdb"+pdb_entry+".ent"
+		var not_selected_chains = [];
+		console.log("would get to fetch data from: "+pdb_url);
+ 	   	pv.io.fetchPdb(pdb_url, function(structure) {
+ 				// var structure = pv.io.pdb(data);
+ 				var chains = structure.chains().map(function(d){
+ 					var chain = d['_H'];
+ 					var current_chain = structure.select({chain: chain});
+ 					if(curr.chain == chain){
+ 						var current_viewer = curr.viewer.cartoon('current_chain', current_chain);
+ 						// var selected = structure.select({rnumRange : [1001,1286]});
+						hit_positions.map(function(range){
+ 							// var selected = structure.select({rnumRange : range});
+							var coordinates = [range.start,range.end];
+ 							// var selected = structure.select({rnumRange : coordinates});
+	 						// var selected = structure.select({rnumRange : [1,286]});
+							var selected = structure.select({rnumRange : coordinates});
+ 							current_viewer.colorBy(color.uniform('red'), selected);
+ 						})
+ 					}
+ 					else{
+ 						not_selected_chains.push(chain);
+ 						curr.viewer.cartoon('other_chain', current_chain);
+ 						curr.viewer.cartoon('other_chain', current_chain);
+ 						curr.viewer.forEach(function(object) {
+ 							if(object['_H'] == 'other_chain'){
+ 								object.setOpacity(0.4);
+ 							}
+ 						});
+ 					}
+ 					return d['_H'];
+ 				})
+ 	     	   //viewer.centerOn(structure);
+ 			   curr.viewer.autoZoom()
+ 			   var html_text = "Pdb structure of the best hit was <a href='http://www.ebi.ac.uk/pdbe/entry/pdb/"+pdb_entry+"'>"+pdb_entry+"</a> (chain: "+curr.chain+").";
+ 			   html_text += (not_selected_chains.length)? "<br>The other "+not_selected_chains.length+" chain(s) ("+not_selected_chains.sort()+") are greyed out. " : "<br>The protein has no other chains. ";
+ 			   html_text += "The matching region on chain "+curr.chain+" is highlighted in red.";
+ 			   d3.select("#pdb_text").html(html_text);
+			   
+ 	   });
+      return pdb_viewer;
+    };
+	
 	function highlightFrom(start, stop) {
 	  return new pv.color.ColorOp(function(atom, out, index) {
 	    if (atom.index() > start && atom.index() < stop ) {
@@ -115,5 +93,39 @@ hmmer_vis.pdb_viewer = function() {
 	  });
 	}
 
-	return pdb_viewer;
+
+	hmmer_vis.dispatch.on('update_pdb_viewer', function(args){
+  // 	    //do something here
+		if (typeof args !== 'undefined'){
+			if(curr.pdb_id == args.pdb_id){
+				if(curr.chain == args.chain){
+					d3.select("#pdb_update_text").html("same pdb_id and chain, nothing updated");
+				}
+				else{
+					d3.select("#pdb_update_text").html("same pdb_id, updating chain from "+curr.chain+" to "+args.chain+" ");
+				}
+			}
+			else{
+				d3.select("#pdb_update_text").html("different pdb_id, fetching new pdb entry");
+				d3.select("#pdb_div").selectAll("*").remove();
+				d3.select("#pdb_spinner").style("visibility",'');
+				// clear old
+				curr.pdb_id = args.pdb_id;
+				curr.chain = args.chain;
+				// var hit_positions = args.mapping.pdb;
+				if(! Object.prototype.toString.call( args.pdb_region ) === '[object Array]' ) {
+					args.pdb_region = [args.pdb_region];
+				}
+				pdb_viewer.redraw(args.pdb_region);
+				curr.viewer = pv.Viewer(curr.div, options);
+				d3.select("#pdb_spinner").style("visibility",'hidden');
+			}
+		}
+		else{
+			d3.select("#pdb_update_text").html("Something went wrong, cannot update");
+		}
+  
+	 return pdb_viewer;
+});
+	 return pdb_viewer;
 };
