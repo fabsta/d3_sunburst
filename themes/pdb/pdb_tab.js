@@ -54,8 +54,8 @@ var pdb_theme_hmmer_dashboard = function() {
 		  };
 
 		  // d3.json("../../data/pdb.json", function(error, data) {
-			  d3.json("../../data/pdb.json", function(error, data) {
-		  // getJSON(hmmer_top_hits_url, function(data) {
+			  // d3.json("../../data/pdb.json", function(error, data) {
+		  getJSON(hmmer_top_hits_url, function(data) {
 
 			// PDB
 	        if (typeof data.pdb !== 'undefined'){
