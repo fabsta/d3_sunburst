@@ -52,7 +52,6 @@ var pdb_theme_hmmer_dashboard = function() {
 		    };
 		    xhr.send();
 		  };
-
 		  // d3.json("../../data/pdb.json", function(error, data) {
 			  // d3.json("../../data/pdb.json", function(error, data) {
 		  getJSON(hmmer_top_hits_url, function(data) {
@@ -110,15 +109,13 @@ var pdb_theme_hmmer_dashboard = function() {
 					}
 				 // hmmer_pdb_viewer(document.getElementById("pdb_div"), best_hit_id, pdb_positions, pdb_mappings);
 			 }
-
 	        }
 			else{
-				d3.select("#pdb_spinner").remove();
+				d3.select("#pdb_spinner").attr('visibility','hidden');
 				d3.select("#pdb_text").html("There was no pdb hit in your search result");
 			}
 			// data table
 			hmmer_pdb_table("pdb_hits_table", [data.found_hits]);
-			
 			
 		  }, function(status) {
 		    alert('Something went wrong.');

@@ -17,12 +17,13 @@ hmmer_vis.pdb_viewer = function() {
 	// The cbak returned
 	var pdb_viewer = function(div, pdb_id, chain,hit_positions) {
 		 // insert the viewer under the Dom element with id 'gl'.
-		 curr.viewer = pv.Viewer(div, options);
-		 curr.width = d3.select("#pdb_div").style("width") 
-		 curr.height = d3.select("#pdb_div").style("height") 
+		options.width = d3.select("#pdb_div").style("width") / 2;
+		options.height = d3.select("#pdb_div").style("height")>0 ? d3.select("#pdb_div").style("height") : options.width;
 		 curr.chain = chain;
 	 	curr.pdb_id = pdb_id;
 		curr.div = div;	
+	 	curr.viewer = pv.Viewer(div, options);
+	 
 	 // if(!show_pdb_entry){
 		 // 		 div.innerHTML = "Sorry no pdb with overlapping matching region found.";
 		 // 	 }
@@ -31,11 +32,16 @@ hmmer_vis.pdb_viewer = function() {
 		return chart;
 	};
 	
+
+    pdb_viewer.update_drawing = function(hit_positions) {
+	
+	}
 	
     pdb_viewer.redraw = function(hit_positions) {
 		var pdb_entry = curr.pdb_id;
 	   	var pdb_url = "http://www.ebi.ac.uk/pdbe/entry-files/download/pdb"+pdb_entry+".ent"
 		var not_selected_chains = [];
+		d3.select("#pdb_spinner").attr('class','');
 		console.log("would get to fetch data from: "+pdb_url);
  	   	pv.io.fetchPdb(pdb_url, function(structure) {
  				// var structure = pv.io.pdb(data);
@@ -72,6 +78,9 @@ hmmer_vis.pdb_viewer = function() {
  			   html_text += (not_selected_chains.length)? "<br>The other "+not_selected_chains.length+" chain(s) ("+not_selected_chains.sort()+") are greyed out. " : "<br>The protein has no other chains. ";
  			   html_text += "The matching region on chain "+curr.chain+" is highlighted in red.";
  			   d3.select("#pdb_text").html(html_text);
+			   d3.select("#pdb_spinner").attr('class','hidden');
+			   
+			   //disable spinner
 			   
  	   });
       return pdb_viewer;
@@ -103,6 +112,13 @@ hmmer_vis.pdb_viewer = function() {
 				}
 				else{
 					d3.select("#pdb_update_text").html("same pdb_id, updating chain from "+curr.chain+" to "+args.chain+" ");
+					curr.pdb_id = args.pdb_id;
+					curr.chain = args.chain;
+					// var hit_positions = args.mapping.pdb;
+					if(! Object.prototype.toString.call( args.pdb_region ) === '[object Array]' ) {
+						args.pdb_region = [args.pdb_region];
+					}
+					pdb_viewer.redraw(args.pdb_region);
 				}
 			}
 			else{
