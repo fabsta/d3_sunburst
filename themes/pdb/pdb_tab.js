@@ -59,7 +59,7 @@ var pdb_theme_hmmer_dashboard = function() {
 			// PDB
 	        if (typeof data.pdb !== 'undefined'){
 				// plot the top hit
-				var best_hit = data.pdb.best_hit
+				var pdb_best_hit;
 				var hit2show = 0;
 				// ok determine the matches that overlap
 				
@@ -99,9 +99,9 @@ var pdb_theme_hmmer_dashboard = function() {
 							}
 							if(overlap_detected && !hit2show){
 								hmmer_pdb_viewer(document.getElementById("pdb_div"), curr_pdb_match.id, curr_pdb_match.chain, [{'start':pdb_from,'end': pdb_to}]);
+								pdb_best_hit = curr_pdb_match.id+"_"+curr_pdb_match.chain;
 								hit2show = 1;
 							}
-							
 						}
 					// if(overlap_detected){
 					// 	current_domain.query_color = color[unique_hit];
@@ -109,14 +109,15 @@ var pdb_theme_hmmer_dashboard = function() {
 					}
 				 // hmmer_pdb_viewer(document.getElementById("pdb_div"), best_hit_id, pdb_positions, pdb_mappings);
 			 }
+				// data table
+				hmmer_pdb_table("pdb_hits_table", [data.found_hits]);
+				// highlight pdb entry
+				// d3.select("#"+pdb_best_hit+"").attr('class','pdb_hit_description small selected');
 	        }
 			else{
 				d3.select("#pdb_spinner").attr('visibility','hidden');
 				d3.select("#pdb_text").html("There was no pdb hit in your search result");
 			}
-			// data table
-			hmmer_pdb_table("pdb_hits_table", [data.found_hits]);
-			
 		  }, function(status) {
 		    alert('Something went wrong.');
 		  });

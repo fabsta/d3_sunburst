@@ -10,6 +10,11 @@
 	<div id="viewer"> 
   <div id="main">
 	  <h4>Summary gives you a quick overview of the best <span id="total_curr_hits">1000</span> hits</h4>
+	  Legend: <ul>
+		  <li><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>: database sequence with exact domain architecture
+		</li>
+		  <li>PDB: database sequence with exact domain architecture</li>
+	  </ul>
     <div class="container">
       <div class="row clearfix">
         <div class="col-md-12 column center-block">
@@ -78,9 +83,11 @@
             </div>
             <div class="col-md-6 column center-block">
               
-                <h4>PDB best hit</h4>
+                <h4>PDB hit</h4>
                <p id="pdb_text"></p>
-               <div id="pdb_div"></div>
+               <div id="pdb_match_div"></div>
+			   <div id="pdb_div"></div>
+			   
                 <div id="pdb_spinner" style="visibility:hidden">
                   Loading top hit.. <img src="http://www.ebi.ac.uk/Tools/hmmer//static/images/loading.gif" alt="Searching seq">
                 </div>
@@ -110,13 +117,17 @@
     (function() {
 
       var theme = hmmer_theme_hmmer_dashboard();
-      // theme(document.getElementById("chart"),"A89A1632-1BEA-11E5-A630-16E31AB9B3C4");
-	  // theme(document.getElementById("chart"),"083E6C62-1E3B-11E5-9AB4-9DF21AB9B3C4");
-	  
-	  theme(document.getElementById("chart"),"724A527C-1E6A-11E5-8AF0-B7F41AB9B3C4");
-	  
-	  
-	  
+        // theme(document.getElementById("chart"),"9F2459AA-20CC-11E5-9E53-3C891AB9B3C4");
+        theme(document.getElementById("chart"),"A3578344-2171-11E5-861B-358D1AB9B3C4");
+	  // very complex
+	   // theme(document.getElementById("chart"),"D0B044CE-1F24-11E5-9451-2F7FD26C98AD");
+	  // BRCA2 -> pdb
+	    // theme(document.getElementById("chart"),"FFAF041C-20F6-11E5-8490-1BBAD26C98AD");
+	  // theme(document.getElementById("chart"),"C9561A36-20F6-11E5-B7E5-CDB9D26C98AD");
+	    // theme(document.getElementById("chart"),"981A647C-1FED-11E5-9160-DB71F69F8818");
+	    // theme(document.getElementById("chart"),"10772428-23E0-11E5-80EC-CCDBD26C98AD");
+	  //hmmsearch
+		// theme(document.getElementById("chart"),"EC731A3C-1FCF-11E5-A7FD-1E7C1AB9B3C4");
     }());
     </script>
 

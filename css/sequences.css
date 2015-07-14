@@ -133,6 +133,7 @@ fill: #fff;
 #pdb_div canvas{
 	display: block;
 	margin: 0 auto;
+	border: 1px solid #000000;
 }
 .species_info {
 	font-size: 8px;

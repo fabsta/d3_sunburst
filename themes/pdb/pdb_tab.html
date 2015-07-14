@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div id="viewer"> 
-  <div id="main">
+  <div id="main center-block" >
 	  <h4>Top x PDB matches</h4>
       <div class="container">
         <div class="row clearfix">
@@ -19,16 +19,16 @@
 			   <div id="pdb_div"></div>
 			   
                 <div id="pdb_spinner" style="visibility:hidden">
-                  Loading top hit.. <img src="http://www.ebi.ac.uk/Tools/hmmer//static/images/loading.gif" alt="Searching seq">
+                  <span id="pdb_loading_text"></span> <img src="http://www.ebi.ac.uk/Tools/hmmer//static/images/loading.gif" alt="Searching seq">
                 </div>
               
           </div>
         </div>
         <div class="col-md-12 column">
           <div class="row clearfix">
+				<div id="pdb_update_text"></div>
                 <h4>PDB hits table</h4>
 				<div id="pdb_match_div"></div>
-				<div id="pdb_update_text"></div>
 				<div id="pdb_hits_table"> </div>
           </div>
         </div>
@@ -54,7 +54,9 @@
 
       var theme = pdb_theme_hmmer_dashboard();
         // theme(document.getElementById("chart"),"9F2459AA-20CC-11E5-9E53-3C891AB9B3C4");
-        theme(document.getElementById("chart"),"44B81E8A-247C-11E5-B0E0-00A11AB9B3C4");
+        // theme(document.getElementById("chart"),"44B81E8A-247C-11E5-B0E0-00A11AB9B3C4");
+        theme(document.getElementById("chart"),"A3578344-2171-11E5-861B-358D1AB9B3C4");
+		
 	  // very complex
 	   // theme(document.getElementById("chart"),"D0B044CE-1F24-11E5-9451-2F7FD26C98AD");
 	  // BRCA2 -> pdb
