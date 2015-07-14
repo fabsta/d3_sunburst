@@ -24,7 +24,7 @@ hmmer_vis.hits_view = function() {
 		'longest_hit' : 0,
 		'hit_legend_top' :6,
 		'hit_legend_bottom' : 21,
-		image_folder: "../../data/images/",
+		image_folder: "http://wwwdev.ebi.ac.uk/Tools/hmmer/static/images/animal_images/",
 
 		// global svg settings
 		'div_width' : 400
