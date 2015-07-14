@@ -18,7 +18,7 @@ hmmer_vis.sunburst2 = function() {
 		breadcrumb_dim : { w: 75, h: 30, s: 3, t: 10},
 		opacity : {full_fadeout: 0.3},
 		legend_li : {w: 85, h: 10, s: 3, r: 3},
-		image_folder: "../../data/images/",
+		image_folder: "http://wwwdev.ebi.ac.uk/Tools/hmmer/static/images/animal_images/",
 		total_hit_number: 0,
 		node_stats : {},
 		tree_legend : {},
@@ -258,7 +258,7 @@ hmmer_vis.sunburst2 = function() {
 			.attr("transform", function(d) { 
 					var c = conf.arc.centroid(d);
 					// console.log("c0: "+c[0]+" "+c[1]+" "+c[2]+" "+c[3]);
-					return "translate(" + c[0]*1.25 +"," + c[1]*1.25 + ")";
+					return "translate(" + c[0]*1.2 +"," + c[1]*1.2 + ")";
 			})
 			.attr("width", 20)
 			.attr("class","sunburst_model_organism")
