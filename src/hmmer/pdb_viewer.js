@@ -7,7 +7,8 @@ hmmer_vis.pdb_viewer = function() {
    width: 400,
    height: 400,
    antialias: true,
-   quality : 'medium'
+   quality : 'medium',
+	 background: 'black'
  };
  var curr = {
 	 'chain': undefined,
@@ -46,7 +47,9 @@ hmmer_vis.pdb_viewer = function() {
 					// var selected = structure.select({rnumRange : coordinates});
 					// var selected = structure.select({rnumRange : [1,286]});
 					var selected = structure.select({rnumRange : coordinates});
-					current_viewer.colorBy(color.uniform('red'), selected);
+					current_viewer.setSelection(selected);
+					
+					// current_viewer.colorBy(pv.color.uniform('red'), selected);
 				})
 			}
 			else{
@@ -63,6 +66,7 @@ hmmer_vis.pdb_viewer = function() {
 		})
 	}
 	
+	
     pdb_viewer.redraw = function(hit_positions) {
 		var pdb_entry = curr.pdb_id;
 	   	var pdb_url = "http://www.ebi.ac.uk/pdbe/entry-files/download/pdb"+pdb_entry+".ent"
@@ -72,19 +76,21 @@ hmmer_vis.pdb_viewer = function() {
 		console.log("would get to fetch data from: "+pdb_url);
  	   	pv.io.fetchPdb(pdb_url, function(structure) {
  				// var structure = pv.io.pdb(data);
+				var selected;
  				curr.chains = structure.chains().map(function(d){
  					var chain = d['_H'];
  					var current_chain = structure.select({chain: chain});
  					if(curr.chain == chain){
- 						var current_viewer = curr.viewer.cartoon('current_chain', current_chain);
+ 						var current_viewer = curr.viewer.cartoon('crambin', current_chain);
  						// var selected = structure.select({rnumRange : [1001,1286]});
 						hit_positions.map(function(range){
  							// var selected = structure.select({rnumRange : range});
 							var coordinates = [range.start,range.end];
  							// var selected = structure.select({rnumRange : coordinates});
 	 						// var selected = structure.select({rnumRange : [1,286]});
-							var selected = structure.select({rnumRange : coordinates});
- 							current_viewer.colorBy(color.uniform('red'), selected);
+							selected = structure.select({rnumRange : coordinates});
+							// current_chain.setSelection(selected);
+ 							// current_viewer.colorBy(color.uniform('red'), selected);
  						})
 						// curr.viewer.fitTo(allSelections);
  					}
@@ -94,11 +100,16 @@ hmmer_vis.pdb_viewer = function() {
  						curr.viewer.forEach(function(object) {
  							if(object['_H'] == 'other_chain'){
  								object.setOpacity(0.4);
+								
  							}
+							else{
+								object.setSelection(selected);
+							}
  						});
  					}
  					return d['_H'];
  				})
+			   curr.viewer.requestRedraw();
  	     	   //viewer.centerOn(structure);
  			   curr.viewer.autoZoom()
 			   // viewer.fitTo(allSelections);
