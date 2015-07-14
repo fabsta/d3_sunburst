@@ -100,7 +100,9 @@ var hmmer_theme_hmmer_dashboard = function() {
 				//can we also show the match
 					hmmer_hits_viewer(document.getElementById("pdb_match_div"), [data.pdb.best_hit],0,'');
 				}
-				hmmer_pdb_viewer(document.getElementById("pdb_div"), best_hit, pdb_positions,data.pdb.mapping,query_architecture_id);
+				// hmmer_pdb_viewer(document.getElementById("pdb_div"), curr_pdb_match.id, curr_pdb_match.chain, [{'start':pdb_from,'end': pdb_to}]);
+				
+				hmmer_pdb_viewer(document.getElementById("pdb_div"), pdb_entry, chain_id,[{'start':pdb_positions[0],'end': pdb_positions[1]}]);
 				
 		       
 	        }
