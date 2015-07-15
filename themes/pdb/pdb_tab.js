@@ -115,8 +115,11 @@ var pdb_theme_hmmer_dashboard = function() {
 				// d3.select("#"+pdb_best_hit+"").attr('class','pdb_hit_description small selected');
 	        }
 			else{
-				d3.select("#pdb_spinner").attr('visibility','hidden');
+				d3.select("#pdb_spinner").style("visibility",'hidden');
 				d3.select("#pdb_text").html("There was no pdb hit in your search result");
+				d3.select("#pdb_text").html("There was no pdb hit in your search result");
+				d3.select("#pdb_hit_table").remove();
+				
 			}
 		  }, function(status) {
 		    alert('Something went wrong.');
