@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+<link rel="stylesheet" type="text/css" href="../../css/hmmer_vis.css"/>
+<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+<link href="//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css" rel="stylesheet"> -->
+
+</head>
+<body>
+<div id="main">
+    <div class="container">
+        <div class="row clearfix">
+          <div class="col-md-8 column">
+            <div class="row clearfix">
+              <div class="col-md-12 column">
+	              <div class="row clearfix">
+					  <h4>Focus the view by clicking on...</h4>
+						<div id="legend" ></div>
+				</div>
+              </div>
+            </div>
+
+            <div class="row clearfix">
+              <div class="col-md-12 column">
+                    <p>Sunburst Hits</p>
+                    <div id="explanation" style="visibility: hidden;">
+                        <div id="sequence"></div>
+                    </div>
+                    <div id="chart"> </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 column">
+              <div class="row clearfix">
+                <div class="col-md-12 column">
+                  <p>Lineage</p>
+                  <div id="lineage_plot">
+                  </div>
+                </div>
+              </div>
+          <div class="row clearfix">
+              <div class="col-md-12 column">
+                <p>E-value distribution for hits in <i><span id="distribution_name"> </span></i></p>
+                  <div id="histogram">
+                      <svg></svg>
+                  </div>
+              </div>
+          </div>
+	      <div class="row clearfix">
+	                <div class="col-md-12 column">
+	                  <p>Were all hits in representative proteomes found?</p>
+	                  <div id="pie_chart">
+	  					<svg></svg>
+	                </div>
+
+	        	</div>
+	      </div>
+
+          <div class="row clearfix">
+              <!-- <div class="col-md-12 column">
+                <h4><u>Annotation word cloud</u></h4>
+                <div id="word_cloud">
+              </div>
+		  	</div> -->
+    </div>
+  </div>
+
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+				<table id="testtable"> </table>
+		</div>
+	</div>
+
+  </div>
+</div>
+
+ <!-- <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+ <script src="//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+<script src="../../js/d3.v3.min.js"></script>
+
+<script src="../../js/nv.d3.min.js"></script>
+ <script src="../../js/d3.layout.cloud.js"></script> -->
+
+ <script src="../../lib/hmmer_vendor.min.js"></script>
+<script src="tree_legend.js"></script>
+<script src="../../lib/hmmer_vis.min.js"></script>
+
+
+
+<script>
+(function() {
+
+    var theme = hmmer_theme_tree_legend();
+    theme(document.getElementById("chart"),"A3578344-2171-11E5-861B-358D1AB9B3C4");
+    }());
+
+</script>

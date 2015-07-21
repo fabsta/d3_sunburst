@@ -80,13 +80,22 @@ var hmmer_theme_hmmer_dashboard = function() {
 	          hmmer_domain_architectures_view(document.getElementById("domain_architectures_view"), data.dom_architectures,query_architecture_id);
 	          d3.select("#domain_architecture_spinner").remove();
 	        }
-			// Tree
-	        if (typeof data.fullTree !== 'undefined'){
+			// // Tree
+// 	        if (typeof data.fullTree !== 'undefined'){
+// 	          console.log("Found fullTree entry: ");
+// 	          // hmmer_sunburst(document.getElementById("chart"), JSON.parse(data.fullTree),"full_tree", data.found_hits)
+// 	          hmmer_sunburst(document.getElementById("chart"), JSON.parse(data.distTree), "dist_tree",data.found_hits)
+// 	          d3.select("#taxonomy_view_spinner").remove();
+// 	        }
+	        if (typeof data.distTree !== 'undefined'){
 	          console.log("Found fullTree entry: ");
 	          // hmmer_sunburst(document.getElementById("chart"), JSON.parse(data.fullTree),"full_tree", data.found_hits)
-	          hmmer_sunburst(document.getElementById("chart"), JSON.parse(data.distTree), "dist_tree",data.found_hits)
+		      var hmmer_tree_legend = hmmer_vis.tree_legend();
+		      hmmer_tree_legend(document.getElementById("chart"), JSON.parse(data.distTree));
 	          d3.select("#taxonomy_view_spinner").remove();
 	        }
+			
+			
 			// PDB
 	        if (typeof data.pdb !== 'undefined'){
 				var pdb_hits = data.pdb.hits
@@ -110,6 +119,23 @@ var hmmer_theme_hmmer_dashboard = function() {
 				d3.select("#pdb_spinner").remove();
 				d3.select("#pdb_text").html("There was no pdb hit in your search result");
 			}
+			
+			var kingdom_colors_legend = [{'taxon': 'Bacteria','color' : '#900'},
+					{'taxon':'Eukaryota','color' :'#f3c800'},
+				  {'taxon': 'Archeae','color': '#009dcc'},
+				   {'taxon': 'Virus','color' : '#ff0000'},
+			      {'taxon': 'Unclassified','color': '#999'},
+					{'taxon': 'oth','color': '#333'}
+				]
+			d3.select("#legend").html("<ul class='first'> \
+				<li class='bact'><span>Bacteria</span></li>\
+				<li class='euk'><span>Eukaryota</span></li>\
+				<li class='arc'><span>Archaea</span></li>\
+				<li class='vir'><span>Viruses</span></li>\
+				<li class='unc'><span>Unclassified sequences</span></li>\
+				<li class='oth'><span>Other</span></li>\
+			</ul>");
+			
 		  }, function(status) {
 		    alert('Something went wrong.');
 		  });

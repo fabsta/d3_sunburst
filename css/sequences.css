@@ -23,6 +23,20 @@
   height: 70px;
 }
 
+
+#hits_viewer{
+    height: 200px;
+    overflow: scroll;
+	overflow-x:scroll;
+}
+#domain_architectures_view {
+	font-size: 8px;*/
+    height: 200px;
+    overflow: scroll;
+	overflow-x:scroll;
+}
+
+
 /*#legend {
   padding: 10px 0 0 3px;
 } */
@@ -34,13 +48,13 @@ fill: #fff;
 
 #chart {
   position: relative;
-  border: 1px solid #000000;
+/*  border: 1px solid #000000;*/
 }
 
-#chart path {
+/*#chart path {
   stroke: #fff;
 }
-
+*/
 #explanations {
   position: absolute;
   top: 260px;
@@ -84,7 +98,7 @@ fill: #fff;
   stroke-width: 1.5px;
 }
 .node text {
-  font: 7px sans-serif;
+  font: 11px sans-serif;
 }
 .link {
   fill: none;
@@ -93,10 +107,16 @@ fill: #fff;
 }
 
 
+.tree_node text {
+  font: 10px sans-serif;
+}
+
+
 .top_hits{
   margin-left: 0px;
   list-style: none;
   border-top: 1px solid #aaa;
+  margin-bottom: 0px; 
 }
 
 

@@ -23,8 +23,6 @@ hmmer_vis.sunburst2 = function() {
 		node_stats : {},
 		tree_legend : {},
 	};
-	
-	
 	var kingdom_colors = {'Bacteria' : '#900',
 						  'Eubacteria (bacteria)' : '#900',
 						  // 'Eukaryota' : '#666600', 

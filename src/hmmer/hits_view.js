@@ -123,7 +123,7 @@ hmmer_vis.hits_view = function() {
 		
 		// AXIS
 		middle_header_div.append('svg').attr('height', 25).attr('width',conf.div_width-10)
-				.append("g").attr("class","axis").attr("transform","translate(3,20)")
+				.append("g").attr("class","axis").attr("transform","translate(-30,20)")
 		.call(d3.svg.axis()
         .scale(axisScale)
         .orient("top"));
