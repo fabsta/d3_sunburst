@@ -6,7 +6,8 @@ hmmer_vis.tree_legend = function() {
   
   var conf = {
 	  tree_type : 'full',
-  image_folder: "../../data/images/",
+	  // image_folder: "../../data/images/",
+	  image_folder: "http://wwwdev.ebi.ac.uk/Tools/hmmer/static/images/animal_images/",
 	  // image_folder: "http://www.ebi.ac.uk/web_guidelines/images/icons/EBI-Species/svg/"
 }
   var margin = {
@@ -91,11 +92,11 @@ var root = {"name": "All","display" : "All",
 	     {"name": "Escherichia coli","display" : "Escherichia coli"},
 	     {"name": "Yersinia pestis","display" : "Yersinia pestis"}
      ]},
-     {"name": "Other","display" : "Other","children" : [
+     // {"name": "Other","display" : "Other","children" : [
 		 {"name": "Virus","display" : "Virus", 'type':'inner'},
 		 {"name": "Archaea","display" : "Archaea", 'type':'inner'},
-		 {"name": "oth","display" : "Other", 'type':'inner'}
-     ]}, 
+		 // {"name": "oth","display" : "Other", 'type':'inner'}
+     // ]},
      ]
 }
  //  var root = {"name": "all","display" : "All","hit_number": 600, "fill": "grey",
@@ -157,12 +158,13 @@ var diagonal = d3.svg.diagonal()
 var tree_legend = function(div,data, tree_type) {
 	
 	var div_width = d3.select(div).style('width').replace("px", "");
-	var div_height = 350;
+	var div_height = 340;
+	
 	conf.tree_type = tree_type?tree_type : conf.tree_type;
 	
   chart = d3.select(div).append("svg").attr("width", div_width).attr("height", div_height)
   // .call(zm = d3.behavior.zoom().scaleExtent([1,3]).on("zoom", tree.redraw)).append("g")
-  .append('g').attr("transform", "translate(" + 40 + "," + (div_height-120) + ")");
+  .append('g').attr("transform", "translate(" + 40 + "," + (div_height-130) + ")");
 
   // root.x0 = 0;
 //root.y0 = div_height / 2;
@@ -234,7 +236,7 @@ function update(source) {
 
 	  .html(function(d) { return d.display+" ("+d.hit_number+")"; })
 	  .style("fill-opacity", 1e-6)
-	   .attr("transform", function(d) { return d.children || d._children ? "translate(15,-18)" : "translate(30,0)"; });;
+	   .attr("transform", function(d) { return d.children || d._children ? "translate(20,-18)" : "translate(30,2)"; });;
 
   // Transition nodes to their new position.
   var nodeUpdate = node.transition()
@@ -539,7 +541,6 @@ hmmer_vis.dispatch.on('update_tree_legend', function(args){
 
 
 function process_dist_tree_json(d) {
-		
 		
 	if(conf.tree_type == 'full'){
 		d.short = d[2];
