@@ -15,7 +15,7 @@ var hmmer_theme_hmmer_dashboard = function() {
 	// var hmmer_top_hits_url = "https://rawgit.com/fabsta/d3_sunburst/master/data/stats.json";
 	var hmmer_domain_tree_url = "http://wwwdev.ebi.ac.uk/Tools/hmmer/results/484B2AFA-CBC2-11E4-B744-822AB8F19640/fail/";
     var hmmer_pfama_url = "http://wwwdev.ebi.ac.uk/Tools/hmmer//annotation/pfama/9B22C480-CBD7-11E4-AADB-FCB7088B62CF";
-	var uuid = "9B22C480-CBD7-11E4-AADB-FCB7088B62CF";
+	// var uuid = "9B22C480-CBD7-11E4-AADB-FCB7088B62CF";
 
   // d3.json(hmmer_pfama_url, function(error, data){
   //   // $.get("../../data/pfama.html", function (data) {
@@ -56,10 +56,14 @@ var hmmer_theme_hmmer_dashboard = function() {
 		  
 		  	  // set curr hits
 			  d3.selectAll("#total_curr_hits").text(data.stats.nincluded>1000?1000:data.stats.nincluded);
+			  d3.selectAll("#total_dom_arch").text(data.stats.no_dom_architectures);
 			  // set links
-			  document.getElementById("uuid_link_score").href=results_url+"/"+uuid+"/score"; 
-			  document.getElementById("uuid_link_domain").href=results_url+"/"+uuid+"/domain"; 
-			  document.getElementById("uuid_link_taxonomy").href=results_url+"/"+uuid+"/taxonomy"; 
+			  document.getElementById("uuid_link_score").href=results_url+""+uuid+"/score"; 
+			  document.getElementById("uuid_link_domain").href=results_url+""+uuid+"/domain"; 
+			  document.getElementById("uuid_link_taxonomy").href=results_url+""+uuid+"/taxonomy"; 
+			  
+			  
+			  
 			  
 			  var query_architecture_id = data.query_arch_id;
 			  // http://www.ebi.ac.uk/pdbe/entry/pdb/1jcn
@@ -91,7 +95,7 @@ var hmmer_theme_hmmer_dashboard = function() {
 	          console.log("Found fullTree entry: ");
 	          // hmmer_sunburst(document.getElementById("chart"), JSON.parse(data.fullTree),"full_tree", data.found_hits)
 		      var hmmer_tree_legend = hmmer_vis.tree_legend();
-		      hmmer_tree_legend(document.getElementById("chart"), JSON.parse(data.distTree));
+		      hmmer_tree_legend(document.getElementById("chart"), JSON.parse(data.fullTree));
 	          d3.select("#taxonomy_view_spinner").remove();
 	        }
 			

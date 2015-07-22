@@ -64,7 +64,7 @@ hmmer_vis.domain_architectures_view = function() {
 		li_link_span.html(function(d){
 			return d.dom_count+"<br>sequences";
 		})
-		var li_link_show_all = li_link.append("span").attr('class', 'show').text("Show All")
+		// var li_link_show_all = li_link.append("span").attr('class', 'show').text("Show All")
 		
 		
 		// var li_right = li.append('p').attr('class', 'right');

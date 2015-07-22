@@ -5,8 +5,9 @@ hmmer_vis.tree_legend = function() {
   var global_dict = {},global_count_dict = {};
   
   var conf = {
-  // image_folder: "../../data/images/",
-	  image_folder: "http://www.ebi.ac.uk/web_guidelines/images/icons/EBI-Species/svg/"
+	  tree_type : 'full',
+  image_folder: "../../data/images/",
+	  // image_folder: "http://www.ebi.ac.uk/web_guidelines/images/icons/EBI-Species/svg/"
 }
   var margin = {
     top: 20,
@@ -24,6 +25,7 @@ hmmer_vis.tree_legend = function() {
 	var kingdom_colors = {'Bacteria' : '#900',
 						  'Eubacteria (bacteria)' : '#900',
 						  'Eukaryota' :'#f3c800',
+						  'Metazoa' :'#f3c800',
 						  'Animals' :'#f3c800',
 						  'Fungi' :'#f3c800',
 						  'Archaea': '#009dcc',
@@ -35,6 +37,7 @@ hmmer_vis.tree_legend = function() {
   var model_organisms = {
     // "Homo sapiens": conf.image_folder+"Homo-sapiens.svg",
  //    "Mus musculus": conf.image_folder+"Mus-musculus.svg",
+ //    "Rattus norvegicus": conf.image_folder+"Rattus_nor.svg",
  //    "Gallus gallus": conf.image_folder+"Gallus-gallus.svg",
  //    "Drosophila melanogaster": conf.image_folder+"Drosophila-melanogaster.svg",
  //    "Dictyostelium discoideum": conf.image_folder+"Dictyostelium-discoideum.svg",
@@ -44,6 +47,7 @@ hmmer_vis.tree_legend = function() {
  //    "Saccharomyces cerevisiae": conf.image_folder+"Saccharomyces-cerevisiae.svg",
  //    "Schizosaccharomyces pombe": conf.image_folder+"Schizosaccharomyces-pombe.svg",
  //    "Yersinia pestis": conf.image_folder+"Yersinia-pestis.svg",
+ // 	"Escherichia coli": conf.image_folder+"Escherichia_coli.svg",
     "Homo sapiens": conf.image_folder+"man.svg",
     "Mus musculus": conf.image_folder+"mouse.svg",
     "Rattus norvegicus": conf.image_folder+"rat.svg",
@@ -55,8 +59,8 @@ hmmer_vis.tree_legend = function() {
     "Arabidopsis thaliana": conf.image_folder+"plant.svg",
     "Saccharomyces cerevisiae": conf.image_folder+"yeast.svg",
     "Schizosaccharomyces pombe": conf.image_folder+"yeast.svg",
-    "Yersinia pestis": conf.image_folder+"Yersinia-pestis.svg",
-    "Escherichia coli": conf.image_folder+".svg",
+    "Yersinia pestis": conf.image_folder+"Escherichia_coli.svg",
+    "Escherichia coli": conf.image_folder+"Escherichia_coli.svg",
 	  
 	  
 
@@ -65,10 +69,10 @@ hmmer_vis.tree_legend = function() {
 
 
   // var root = {"name":"all","children":[{"name":"Eukaryota"},{"name":"Yersinia pestis","children":[{"name":"Dictyostelium discoideum"},{"name":"Opisthokonta"},{"name":"Arabidopsis thaliana","children":[{"name":"Bilateria"},{"name":"Ascomycota","children":[{"name":"Saccharomyces cerevisiae"},{"name":"Schizosaccharomyces pombe","children":[{"name":"Euteleostomi"},{"name":"Ecdysozoa","children":[{"name":"Drosophila melanogaster"},{"name":"Caenorhabditis elegans","children":[{"name":"Amniota"},{"name":"Danio rerio","children":[{"name":"Euarchontoglires"},{"name":"Gallus gallus","children":[{"name":"Mus musculus"},{"name":"Homo sapiens"}]}]}]}]}]}]}]}]}]}
-var root = {"name": "all","display" : "All",
+var root = {"name": "All","display" : "All",
   "children" : [
      {"name": "Eukaryota","display" : "Eukaryota", "children" :[
-			{"name": "Bilateria","display" : "Bilateria","children" :[
+			{"name": "Metazoa","display" : "Animals","children" :[
 				{"name": "Homo sapiens","display" : "Human"},
 				{"name": "Mus musculus","display" : "Mouse"},
 				{"name": "Rattus norvegicus","display" : "Rat"},
@@ -78,10 +82,10 @@ var root = {"name": "all","display" : "All",
 				{"name": "Drosophila melanogaster","display" : "Fly"},
 			]},
 		    {"name": "Fungi","display" : "Fungi","children" :[
-		     	{"name": "Schizosaccharomyces pombe","display" : "Schizosaccharomyces pombe"},
-		     	{"name": "Saccharomyces cerevisiae","display" : "Saccharomyces cerevisiae"},
+		     	{"name": "Schizosaccharomyces pombe","display" : "Fission yeast"},
+		     	{"name": "Saccharomyces cerevisiae","display" : "Baker's yeast"},
 		    ]},
-         	{"name": "Dictyostelium discoideum","display" : "Dictyostelium discoideum"},
+         	{"name": "Dictyostelium discoideum","display" : "Amoeba"},
      ]},
      {"name": "Bacteria","display" : "Bacteria","children" : [
 	     {"name": "Escherichia coli","display" : "Escherichia coli"},
@@ -150,10 +154,11 @@ var diagonal = d3.svg.diagonal()
 
 
 // The cbak returned
-var tree_legend = function(div,data) {
+var tree_legend = function(div,data, tree_type) {
 	
 	var div_width = d3.select(div).style('width').replace("px", "");
 	var div_height = 350;
+	conf.tree_type = tree_type?tree_type : conf.tree_type;
 	
   chart = d3.select(div).append("svg").attr("width", div_width).attr("height", div_height)
   // .call(zm = d3.behavior.zoom().scaleExtent([1,3]).on("zoom", tree.redraw)).append("g")
@@ -222,6 +227,9 @@ function update(source) {
   nodeEnter.append("text")
 	  // .attr("x", function(d) { return d.children || d._children ? -13 : 30; })
 	  .attr("dy", ".45em")
+	  .style("opacity", function(d){
+		return (!d.hit_number || d.hit_number < 1)? 0.2 : 1;
+	  })
 	  .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
 
 	  .html(function(d) { return d.display+" ("+d.hit_number+")"; })
@@ -301,9 +309,8 @@ function update(source) {
 		return diagonal({source: o, target: o});
 	  })
      .style("opacity", function(d){
-		 return (!d.target.hit_number || d.target.hit_number < 1)? 0.2 : 1;
+		 return (!d.target.hit_number || d.target.hit_number < 1)? 0.4 : 1;
      });
-
   // Transition links to their new position.
   link.transition()
 	  .duration(duration)
@@ -533,9 +540,18 @@ hmmer_vis.dispatch.on('update_tree_legend', function(args){
 
 function process_dist_tree_json(d) {
 		
+		
+	if(conf.tree_type == 'full'){
+		d.short = d[2];
+		d.children = d[0];
+		d.hit_number = d[5];
+		global_dict[d.short] = d.hit_number ? d.hit_number  :0;
+		global_count_dict[d.short] = d.hit_number;
+	}
+	else{
 		global_dict[d.short] = d.count ? d.count[0]  :10;
 		global_count_dict[d.short] = d.count;
-
+	}
 		if(d.children){
 			for (var child of d.children){
 				process_dist_tree_json(child);

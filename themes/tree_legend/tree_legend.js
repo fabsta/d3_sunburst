@@ -26,7 +26,8 @@ var hmmer_theme_tree_legend = function() {
   getJSON(hmmer_top_hits_url, function(data) {
 	
     var hmmer_tree_legend = hmmer_vis.tree_legend();
-    hmmer_tree_legend(document.getElementById("legend"), JSON.parse(data.distTree));
+    // hmmer_tree_legend(document.getElementById("legend"), JSON.parse(data.distTree));
+    hmmer_tree_legend(document.getElementById("legend"), JSON.parse(data.fullTree));
 	})
   };
 

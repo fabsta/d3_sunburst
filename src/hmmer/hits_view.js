@@ -156,16 +156,6 @@ hmmer_vis.hits_view = function() {
 				  .attr("class",function(d){return " "+d.kg; })
 		
 		var second_colum = first_row.append('td')
-		// second_colum.append('span').attr('class','table_hit').html(function(d,i){return "<b>"+(i+1)+"</b>"})
-		second_colum.append('text').html(function(d,i){return "<b>"+d.name+"</b>"})
-			  	 // .attr('class','class="col-md-2"')
-				  // .attr("colspan", "2")
-				  .html(function(d,i){
-				  					 return "<b>"+d.name+"</b>";
-				 // 					 // return "<b>"+(i+1)+". "+d.name+"</b>";
-				  })
-		//model orga
-		second_row.append('td')
 			    .append('svg').attr('height', 15).attr('width',15)
 				.append("svg:image")
 	   			.attr("xlink:href", function(d){
@@ -177,17 +167,26 @@ hmmer_vis.hits_view = function() {
 						.attr("width", 15)
 						.attr("class","sunburst_model_organism")
 						.attr("height", 15);
+	  	first_row.append('td')
+	  				  .append('span')
+	  				  .style("font-size","1.5em")
+	  				  // .attr('aria-hidden','true')
+	  				  .attr('class',function(d){
+	  							return d.archindex == query_architecture_id? 'glyphicon glyphicon-ok-circle' : ''
+	  				  })
+	  				  .html(function(d){ return d.hasOwnProperty("is_best_pdb_hit")? " PDB" : ''; })
+		//model orga
+		second_row.append('td').attr('class','table_hit').html(function(d,i){return "<b>"+(i+1)+"</b>"})
+		
+		second_row.append('text').html(function(d,i){return "<b>"+d.name+"</b>"})
+				  .html(function(d,i){
+				  					 return "<b>"+d.name+"</b>";
+				 // 					 // return "<b>"+(i+1)+". "+d.name+"</b>";
+				  })
 		// .html(function(d){ return d.species; })
 		// domain architecture
 						// <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-		second_row.append('td')
-				  .append('span')
-				  .style("font-size","1.5em")
-				  // .attr('aria-hidden','true')
-				  .attr('class',function(d){
-							return d.archindex == query_architecture_id? 'glyphicon glyphicon-ok-circle' : ''
-				  })
-				  .html(function(d){ return d.hasOwnProperty("is_best_pdb_hit")? " PDB" : ''; })
+		
 						// .html(function(d){
 			// var return_value = query_architecture_id? "EXACT" : '     ';
 			// return_value += d.hasOwnProperty("is_best_pdb_hit")? "PDB" : '     ';
