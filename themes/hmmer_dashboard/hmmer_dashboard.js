@@ -58,7 +58,7 @@ var hmmer_theme_hmmer_dashboard = function() {
 		  
 		  	  // set curr hits
 			  d3.selectAll("#total_curr_hits").text(data.stats.nincluded>1000?1000:data.stats.nincluded);
-			  d3.selectAll("#total_dom_arch").text(data.stats.no_dom_architectures);
+			  
 			  // set links
 			  document.getElementById("uuid_link_score").href=results_url+""+uuid+"/score"; 
 			  document.getElementById("uuid_link_domain").href=results_url+""+uuid+"/domain"; 
@@ -102,9 +102,15 @@ var hmmer_theme_hmmer_dashboard = function() {
 				  d3.select("#same_domain_architectures_view").html("no matching domain architecture");
 			  }
 	          d3.select("#domain_architecture_spinner").remove();
+	          d3.select("#exact_domain_architecture_spinner").remove();
+			  
 			  
 			  hmmer_domain_architectures_view(document.getElementById("domain_architectures_view"), data.dom_architectures, query_architecture_id);
-			  
+			  // set the numbers
+			  var total_no_dom_arch = data.matching_da ? data.stats.no_dom_architectures-1 : data.stats.no_dom_architectures;
+			  var doms_to_show = total_no_dom_arch > 4 ? 4: total_no_dom_arch;
+			  d3.selectAll("#total_dom_arch").text(total_no_dom_arch);
+			  d3.selectAll("#doms_to_show").text(doms_to_show);
 	        }
 			// // Tree
 // 	        if (typeof data.fullTree !== 'undefined'){
