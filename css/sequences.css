@@ -25,13 +25,13 @@
 
 
 #hits_viewer{
-    height: 250px;
+    height: 312px;
     overflow: scroll;
 	overflow-x:scroll;
 }
 .domain_architectures_view {
 	font-size: 8px;*/
-    height: 250px;
+/*    height: 250px;*/
     overflow: scroll;
 	overflow-x:scroll;
 }

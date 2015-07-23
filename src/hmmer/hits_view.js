@@ -27,7 +27,7 @@ hmmer_vis.hits_view = function() {
 		image_folder: "http://wwwdev.ebi.ac.uk/Tools/hmmer/static/images/animal_images/",
 
 		// global svg settings
-		'div_width' : 400
+		// 'div_width' : 400
 	};
 	 // var color = d3.scale.category10();
 	 var color = ['#990000','#f9ea6d','#009900','#000099','#aaaaaa'];
@@ -51,6 +51,8 @@ hmmer_vis.hits_view = function() {
 
 	// The cbak returned
 	var hits_view = function(div, found_hits,add_header,query_architecture_id) {
+		//set div witdh
+		conf.div_width = d3.select(div).style('width').replace("px", "");
 		// to plot the colors correctly, we need to add a value to d.domains
 		for (var index = 0; index < found_hits.length; ++index) {
 			var current_hit = found_hits[index]

@@ -164,7 +164,7 @@ var tree_legend = function(div,data, tree_type) {
 	
   chart = d3.select(div).append("svg").attr("width", div_width).attr("height", div_height)
   // .call(zm = d3.behavior.zoom().scaleExtent([1,3]).on("zoom", tree.redraw)).append("g")
-  .append('g').attr("transform", "translate(" + 150 + "," + (div_height-120) + ")");
+  .append('g').attr("transform", "translate(" + 30 + "," + (div_height-120) + ")");
 
   // root.x0 = 0;
 //root.y0 = div_height / 2;
