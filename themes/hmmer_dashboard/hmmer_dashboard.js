@@ -104,13 +104,14 @@ var hmmer_theme_hmmer_dashboard = function() {
 	          d3.select("#domain_architecture_spinner").remove();
 	          d3.select("#exact_domain_architecture_spinner").remove();
 			  
-			  
-			  hmmer_domain_architectures_view(document.getElementById("domain_architectures_view"), data.dom_architectures, query_architecture_id);
+			  if(data.dom_architectures){
+				  hmmer_domain_architectures_view(document.getElementById("domain_architectures_view"), data.dom_architectures, query_architecture_id);
 			  // set the numbers
-			  var total_no_dom_arch = data.matching_da ? data.stats.no_dom_architectures-1 : data.stats.no_dom_architectures;
-			  var doms_to_show = total_no_dom_arch > 4 ? 4: total_no_dom_arch;
-			  d3.selectAll("#total_dom_arch").text(total_no_dom_arch);
-			  d3.selectAll("#doms_to_show").text(doms_to_show);
+				  var total_no_dom_arch = data.matching_da ? data.stats.no_dom_architectures-1 : data.stats.no_dom_architectures;
+				  var doms_to_show = total_no_dom_arch > 4 ? 4: total_no_dom_arch;
+				  d3.selectAll("#total_dom_arch").text(total_no_dom_arch);
+				  d3.selectAll("#doms_to_show").text(doms_to_show);
+		  	  }
 	        }
 			// // Tree
 // 	        if (typeof data.fullTree !== 'undefined'){
@@ -169,7 +170,7 @@ var hmmer_theme_hmmer_dashboard = function() {
 			</ul>");
 			
 		  }, function(status) {
-		    alert('Something went wrong.');
+		     d3.selectAll("#total_dom_arch").text('Could not fetch data.Try again.');
 		  });
 
 
