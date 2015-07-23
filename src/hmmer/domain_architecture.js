@@ -38,7 +38,7 @@ hmmer_vis.domain_architectures_view = function() {
 		// determine longest hit
 		conf.longest_hit = d3.max(data, function(d) {
 			var test;
-			return d.length;
+			return d.length? d.length : 0;
 		});
 		conf.width = conf.longest_hit;
 

@@ -50,7 +50,7 @@ hmmer_vis.hits_view = function() {
 
 
 	// The cbak returned
-	var hits_view = function(div, found_hits,add_header,best_pdb_hit, query_architecture_id) {
+	var hits_view = function(div, found_hits,add_header,query_architecture_id) {
 		// to plot the colors correctly, we need to add a value to d.domains
 		for (var index = 0; index < found_hits.length; ++index) {
 			var current_hit = found_hits[index]
@@ -152,37 +152,51 @@ hmmer_vis.hits_view = function() {
 		var second_row = left_table.append('tr');
 		//counter
 		// tr for: number and accession
+		// Hit number
+		first_row.append('td').attr('class','table_hit').html(function(d,i){return "<b>"+(i+1)+"</b>"})
+		// species color
+		first_row.append('td').attr("class",function(d){return " "+d.kg; })
+		// species
 		first_row.append('td')
-				  .attr("class",function(d){return " "+d.kg; })
-		
-		var second_colum = first_row.append('td')
 			    .append('svg').attr('height', 15).attr('width',15)
 				.append("svg:image")
 	   			.attr("xlink:href", function(d){
 						if(d.species in model_organisms){
 								return model_organisms[d.species];
 						}
-							
+
 				})
 						.attr("width", 15)
 						.attr("class","sunburst_model_organism")
 						.attr("height", 15);
+
+  	  	first_row.append('td')
+  	  				  // .append('span')
+  	  				  // .style("font-size","1.5em")
+  					  .html("DA")
+ 					  .style('color', function(d){
+						  var found_color = d.hasOwnProperty("archindex") ? d["archindex"] : 'black';
+ 					   	return found_color == query_architecture_id? 'red' : 'black';
+ 					  }) 
+  					  .style("opacity", function(d){
+ 						  	var found_color = d.hasOwnProperty("archindex") ? d["archindex"] : 'black';
+  							return found_color == query_architecture_id? 1 : 0.2;
+  						  })
+
 	  	first_row.append('td')
-	  				  .append('span')
-	  				  .style("font-size","1.5em")
-	  				  // .attr('aria-hidden','true')
-	  				  .attr('class',function(d){
-	  							return d.archindex == query_architecture_id? 'glyphicon glyphicon-ok-circle' : ''
-	  				  })
-	  				  .html(function(d){ return d.hasOwnProperty("is_best_pdb_hit")? " PDB" : ''; })
+	  				  // .append('span')
+	  				  // .style("font-size","1.5em")
+					  .append("text").html("PDB")
+					   .style('color', function(d){
+					   	return d.hasOwnProperty("is_best_pdb_hit")? 'red' : 'black';
+					   })  
+					  .style("opacity", function(d){
+							return d.hasOwnProperty("is_best_pdb_hit")? 1 : 0.2;
+						  })
 		//model orga
-		second_row.append('td').attr('class','table_hit').html(function(d,i){return "<b>"+(i+1)+"</b>"})
+		// second_row.append('td').attr('class','table_hit').html(function(d,i){return "<b>"+(i+1)+"</b>"})
 		
 		second_row.append('text').html(function(d,i){return "<b>"+d.name+"</b>"})
-				  .html(function(d,i){
-				  					 return "<b>"+d.name+"</b>";
-				 // 					 // return "<b>"+(i+1)+". "+d.name+"</b>";
-				  })
 		// .html(function(d){ return d.species; })
 		// domain architecture
 						// <span class="glyphicon glyphicon-search" aria-hidden="true"></span>

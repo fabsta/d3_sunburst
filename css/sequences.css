@@ -25,13 +25,13 @@
 
 
 #hits_viewer{
-    height: 200px;
+    height: 250px;
     overflow: scroll;
 	overflow-x:scroll;
 }
-#domain_architectures_view {
+.domain_architectures_view {
 	font-size: 8px;*/
-    height: 200px;
+    height: 250px;
     overflow: scroll;
 	overflow-x:scroll;
 }
@@ -218,6 +218,10 @@ fill: #fff;
 }
 
 
+.top_hits table{
+/*	width: 65%;*/
+	table-layout: fixed;
+}
 .table_hit {
 	border: 1px solid #999;
 }

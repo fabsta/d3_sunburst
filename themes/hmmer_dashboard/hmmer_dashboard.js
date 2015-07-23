@@ -70,7 +70,7 @@ var hmmer_theme_hmmer_dashboard = function() {
 			  
 	        if (typeof data.found_hits !== 'undefined'){
 				d3.select("#top_hits_spinner").remove();
-				hmmer_hits_viewer(document.getElementById("hits_viewer"), data.found_hits,1,data.best_pdb_hit,query_architecture_id);
+				hmmer_hits_viewer(document.getElementById("hits_viewer"), data.found_hits,1,query_architecture_id);
 			}
 	        // if (typeof data.distTree !== 'undefined'){
 	        //   console.log("Found distTree entry: ");
@@ -80,9 +80,29 @@ var hmmer_theme_hmmer_dashboard = function() {
 	        
 	        // domain architecture
 	        if(typeof data.dom_architectures !== 'undefined'){
+				var new_dom_array = [];
+				for (var domain_index = 0; domain_index < data.dom_architectures.length; ++domain_index) {
+					var current_domain = data.dom_architectures[domain_index]
+					if(current_domain['archindex'] == query_architecture_id){
+						data.matching_da = [current_domain];
+						delete data.dom_architectures[domain_index];
+					}
+					else{
+						new_dom_array.push(current_domain);
+					}
+				}
+				data.dom_architectures = new_dom_array;
 	          console.log("Found dom_architectures entry: ");
-	          hmmer_domain_architectures_view(document.getElementById("domain_architectures_view"), data.dom_architectures,query_architecture_id);
+			  if(data.matching_da){
+	         	 hmmer_domain_architectures_view(document.getElementById("same_domain_architectures_view"), data.matching_da,query_architecture_id);
+		  	  }
+			  else{
+			  	
+			  }
 	          d3.select("#domain_architecture_spinner").remove();
+			  
+			  hmmer_domain_architectures_view(document.getElementById("domain_architectures_view"), data.dom_architectures,query_architecture_id);
+			  
 	        }
 			// // Tree
 // 	        if (typeof data.fullTree !== 'undefined'){
@@ -111,7 +131,7 @@ var hmmer_theme_hmmer_dashboard = function() {
  	 		 	(function(arr){ pdb_entry=arr[0]; chain_id=arr[1]; })(best_hit.split("_"));
 		        if (typeof data.pdb.best_hit !== 'undefined'){
 				//can we also show the match
-					hmmer_hits_viewer(document.getElementById("pdb_match_div"), [data.pdb.best_hit],0,'');
+					hmmer_hits_viewer(document.getElementById("pdb_match_div"), [data.pdb.best_hit],0,query_architecture_id);
 				}
 				// hmmer_pdb_viewer(document.getElementById("pdb_div"), curr_pdb_match.id, curr_pdb_match.chain, [{'start':pdb_from,'end': pdb_to}]);
 				
