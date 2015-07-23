@@ -54,6 +54,8 @@ var hmmer_theme_hmmer_dashboard = function() {
 		  getJSON(hmmer_top_hits_url, function(data) {
 			  // getJSON("../../data/good_examples/example.json", function(data) {
 		  
+			if(data.stats){
+		  
 		  	  // set curr hits
 			  d3.selectAll("#total_curr_hits").text(data.stats.nincluded>1000?1000:data.stats.nincluded);
 			  d3.selectAll("#total_dom_arch").text(data.stats.no_dom_architectures);
@@ -62,7 +64,7 @@ var hmmer_theme_hmmer_dashboard = function() {
 			  document.getElementById("uuid_link_domain").href=results_url+""+uuid+"/domain"; 
 			  document.getElementById("uuid_link_taxonomy").href=results_url+""+uuid+"/taxonomy"; 
 			  
-			  
+		  }
 			  
 			  
 			  var query_architecture_id = data.query_arch_id;
@@ -94,14 +96,14 @@ var hmmer_theme_hmmer_dashboard = function() {
 				data.dom_architectures = new_dom_array;
 	          console.log("Found dom_architectures entry: ");
 			  if(data.matching_da){
-	         	 hmmer_domain_architectures_view(document.getElementById("same_domain_architectures_view"), data.matching_da,query_architecture_id);
+	         	 hmmer_domain_architectures_view(document.getElementById("same_domain_architectures_view"), data.matching_da, query_architecture_id,1);
 		  	  }
 			  else{
-			  	
+				  d3.select("#same_domain_architectures_view").html("no matching domain architecture");
 			  }
 	          d3.select("#domain_architecture_spinner").remove();
 			  
-			  hmmer_domain_architectures_view(document.getElementById("domain_architectures_view"), data.dom_architectures,query_architecture_id);
+			  hmmer_domain_architectures_view(document.getElementById("domain_architectures_view"), data.dom_architectures, query_architecture_id);
 			  
 	        }
 			// // Tree
